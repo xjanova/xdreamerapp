@@ -76,8 +76,8 @@ class _MetalFieldState extends State<MetalField> {
     final rim = hasError
         ? XdrColors.danger.withValues(alpha: 0.45)
         : _focus.hasFocus
-            ? XdrColors.cyan.withValues(alpha: 0.35)
-            : Colors.transparent;
+        ? XdrColors.cyan.withValues(alpha: 0.35)
+        : Colors.transparent;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,7 +98,11 @@ class _MetalFieldState extends State<MetalField> {
             borderRadius: BorderRadius.circular(13),
             boxShadow: [
               if (_focus.hasFocus && !hasError)
-                BoxShadow(color: XdrColors.cyan.withValues(alpha: 0.09), blurRadius: 0, spreadRadius: 3),
+                BoxShadow(
+                  color: XdrColors.cyan.withValues(alpha: 0.09),
+                  blurRadius: 0,
+                  spreadRadius: 3,
+                ),
             ],
           ),
           child: MetalSurface(
@@ -120,7 +124,8 @@ class _MetalFieldState extends State<MetalField> {
               autofillHints: widget.autofillHints,
               cursorColor: XdrColors.ice,
               cursorWidth: 2,
-              style: widget.textStyle ??
+              style:
+                  widget.textStyle ??
                   XdrType.thai(
                     size: 14,
                     color: XdrColors.textPrimary,

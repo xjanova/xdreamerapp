@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/net/api_exception.dart';
 import '../../core/theme/xdr_colors.dart';
 import '../../core/theme/xdr_type.dart';
 import '../../core/widgets/common.dart';
@@ -37,9 +38,9 @@ class BootScreen extends ConsumerWidget {
                   const SizedBox(height: 26),
                   if (failed) ...[
                     ErrorPanel(
-                      message: auth.error is Exception
-                          ? '${auth.error}'
-                          : 'เชื่อมต่อ X-DREAMER ไม่สำเร็จ',
+                      // Routed through ApiException so a stray framework error
+                      // cannot put a stack trace or a file path on screen.
+                      message: ApiException.from(auth.error!).message,
                       onRetry: () => ref.read(authControllerProvider.notifier).retryRestore(),
                     ),
                   ] else

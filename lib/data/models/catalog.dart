@@ -77,10 +77,10 @@ class AiModelInfo {
   /// Rough wait, shown next to the model name. Derived rather than stored — the
   /// API has no ETA field for non-GPU jobs.
   String get etaLabel => switch (category) {
-        'video' => '~40-60 วิ',
-        'edit' => '~10-15 วิ',
-        _ => '~8-15 วิ',
-      };
+    'video' => '~40-60 วิ',
+    'edit' => '~10-15 วิ',
+    _ => '~8-15 วิ',
+  };
 
   factory AiModelInfo.fromJson(Map<String, dynamic> json) {
     final provider = json.obj('provider') ?? const {};
@@ -110,7 +110,9 @@ class AiModelInfo {
   bool servesMode(StudioMode mode) {
     if (mode == StudioMode.upscale) {
       final haystack = '$name ${subcategory ?? ''}'.toLowerCase();
-      return haystack.contains('upscale') || haystack.contains('esrgan') || haystack.contains('enhance');
+      return haystack.contains('upscale') ||
+          haystack.contains('esrgan') ||
+          haystack.contains('enhance');
     }
     return category == mode.apiType;
   }
@@ -125,10 +127,10 @@ class StylePreset {
   final String? thumbnail;
 
   factory StylePreset.fromJson(Map<String, dynamic> json) => StylePreset(
-        id: json.intVal('id'),
-        name: json.str('name'),
-        thumbnail: json.strOrNull('thumbnail'),
-      );
+    id: json.intVal('id'),
+    name: json.str('name'),
+    thumbnail: json.strOrNull('thumbnail'),
+  );
 }
 
 /// A row of `ai_credit_packages`. Prices arrive as Prisma `Decimal` strings.
@@ -163,16 +165,16 @@ class CreditPackage {
   final List<String> features;
 
   factory CreditPackage.fromJson(Map<String, dynamic> json) => CreditPackage(
-        id: json.intVal('id'),
-        name: json.str('name'),
-        slug: json.str('slug'),
-        description: json.strOrNull('description'),
-        credits: json.intVal('credits'),
-        priceThb: json.dbl('priceThb'),
-        priceUsd: json.dbl('priceUsd'),
-        bonusCredits: json.intVal('bonusCredits'),
-        badge: json.strOrNull('badge'),
-        isFeatured: json.flag('isFeatured'),
-        features: json.strList('features'),
-      );
+    id: json.intVal('id'),
+    name: json.str('name'),
+    slug: json.str('slug'),
+    description: json.strOrNull('description'),
+    credits: json.intVal('credits'),
+    priceThb: json.dbl('priceThb'),
+    priceUsd: json.dbl('priceUsd'),
+    bonusCredits: json.intVal('bonusCredits'),
+    badge: json.strOrNull('badge'),
+    isFeatured: json.flag('isFeatured'),
+    features: json.strList('features'),
+  );
 }

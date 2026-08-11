@@ -36,15 +36,15 @@ class UpdateInfo {
   }
 
   factory UpdateInfo.fromJson(Map<String, dynamic> json) => UpdateInfo(
-        version: json.str('latestVersion', '0.0.0'),
-        minSupportedVersion: json.str('minSupportedVersion', '0.0.0'),
-        releaseNotes: json.str('releaseNotes'),
-        apkUrl: json.str('apkUrl'),
-        apkSizeBytes: json.intVal('apkSizeBytes'),
-        sha256: json.strOrNull('sha256'),
-        publishedAt: json.date('publishedAt'),
-        proxied: json.flag('proxied'),
-      );
+    version: json.str('latestVersion', '0.0.0'),
+    minSupportedVersion: json.str('minSupportedVersion', '0.0.0'),
+    releaseNotes: json.str('releaseNotes'),
+    apkUrl: json.str('apkUrl'),
+    apkSizeBytes: json.intVal('apkSizeBytes'),
+    sha256: json.strOrNull('sha256'),
+    publishedAt: json.date('publishedAt'),
+    proxied: json.flag('proxied'),
+  );
 }
 
 /// Compare two dotted version strings.

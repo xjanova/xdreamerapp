@@ -155,9 +155,7 @@ class MetalSurface extends StatelessWidget {
         child: Stack(
           children: [
             Positioned.fill(
-              child: DecoratedBox(
-                decoration: BoxDecoration(gradient: faceOverride ?? spec.face),
-              ),
+              child: DecoratedBox(decoration: BoxDecoration(gradient: faceOverride ?? spec.face)),
             ),
             if (brushed)
               const Positioned.fill(
@@ -214,12 +212,7 @@ class MetalSurface extends StatelessWidget {
 /// A metal ring around framed art or an icon tile — light at the top-left,
 /// black at the bottom-right, so the thing inside reads as recessed into it.
 class BevelRing extends StatelessWidget {
-  const BevelRing({
-    super.key,
-    required this.child,
-    this.radius = 16,
-    this.thickness = 2,
-  });
+  const BevelRing({super.key, required this.child, this.radius = 16, this.thickness = 2});
 
   final Widget child;
   final double radius;

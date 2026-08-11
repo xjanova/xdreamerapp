@@ -106,10 +106,12 @@ class _PricingScreenState extends ConsumerState<PricingScreen> with WidgetsBindi
                         ),
                       ),
                       const SizedBox(height: 16),
-                      Center(child: _CurrencyToggle(
-                        value: _currency,
-                        onChanged: (c) => setState(() => _currency = c),
-                      )),
+                      Center(
+                        child: _CurrencyToggle(
+                          value: _currency,
+                          onChanged: (c) => setState(() => _currency = c),
+                        ),
+                      ),
                       const SizedBox(height: 16),
                       packages.when(
                         loading: () => const Column(
@@ -323,8 +325,7 @@ class _TierCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(_price, style: XdrType.price()),
-                  Text('ครั้งเดียว',
-                      style: XdrType.thai(size: 10, color: XdrColors.textDim)),
+                  Text('ครั้งเดียว', style: XdrType.thai(size: 10, color: XdrColors.textDim)),
                 ],
               ),
             ],
@@ -369,10 +370,7 @@ class _TierCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(9),
                       color: Colors.white.withValues(alpha: 0.05),
                     ),
-                    child: Text(
-                      feature,
-                      style: XdrType.thai(size: 11, color: XdrColors.textBody),
-                    ),
+                    child: Text(feature, style: XdrType.thai(size: 11, color: XdrColors.textBody)),
                   ),
               ],
             ),
@@ -435,19 +433,15 @@ class _PerGenerationTable extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 10),
-                  Text(
-                    switch (model.category) {
-                      'video' => 'วิดีโอ',
-                      'edit' => 'แก้ไข',
-                      _ => 'ภาพ',
-                    },
-                    style: XdrType.thai(size: 10.5, color: XdrColors.textDim),
-                  ),
+                  Text(switch (model.category) {
+                    'video' => 'วิดีโอ',
+                    'edit' => 'แก้ไข',
+                    _ => 'ภาพ',
+                  }, style: XdrType.thai(size: 10.5, color: XdrColors.textDim)),
                   const SizedBox(width: 12),
                   Text(
                     '${model.creditsPerUnit} ✦',
-                    style: XdrType.latin(
-                        size: 12, weight: FontWeight.w600, color: XdrColors.ice),
+                    style: XdrType.latin(size: 12, weight: FontWeight.w600, color: XdrColors.ice),
                   ),
                 ],
               ),

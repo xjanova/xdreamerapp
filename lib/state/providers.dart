@@ -30,33 +30,33 @@ final tokenStoreProvider = Provider<TokenStore>((ref) => TokenStore());
 
 final apiClientProvider = Provider<ApiClient>((ref) {
   final signal = ref.watch(sessionLostSignalProvider);
-  return ApiClient(
-    tokens: ref.watch(tokenStoreProvider),
-    onSessionLost: signal.fire,
-  );
+  return ApiClient(tokens: ref.watch(tokenStoreProvider), onSessionLost: signal.fire);
 });
 
 final authRepositoryProvider = Provider<AuthRepository>(
-  (ref) => AuthRepository(
-    client: ref.watch(apiClientProvider),
-    tokens: ref.watch(tokenStoreProvider),
-  ),
+  (ref) =>
+      AuthRepository(client: ref.watch(apiClientProvider), tokens: ref.watch(tokenStoreProvider)),
 );
 
-final catalogRepositoryProvider =
-    Provider<CatalogRepository>((ref) => CatalogRepository(ref.watch(apiClientProvider)));
+final catalogRepositoryProvider = Provider<CatalogRepository>(
+  (ref) => CatalogRepository(ref.watch(apiClientProvider)),
+);
 
-final generationRepositoryProvider =
-    Provider<GenerationRepository>((ref) => GenerationRepository(ref.watch(apiClientProvider)));
+final generationRepositoryProvider = Provider<GenerationRepository>(
+  (ref) => GenerationRepository(ref.watch(apiClientProvider)),
+);
 
-final galleryRepositoryProvider =
-    Provider<GalleryRepository>((ref) => GalleryRepository(ref.watch(apiClientProvider)));
+final galleryRepositoryProvider = Provider<GalleryRepository>(
+  (ref) => GalleryRepository(ref.watch(apiClientProvider)),
+);
 
-final creditsRepositoryProvider =
-    Provider<CreditsRepository>((ref) => CreditsRepository(ref.watch(apiClientProvider)));
+final creditsRepositoryProvider = Provider<CreditsRepository>(
+  (ref) => CreditsRepository(ref.watch(apiClientProvider)),
+);
 
-final referralRepositoryProvider =
-    Provider<ReferralRepository>((ref) => ReferralRepository(ref.watch(apiClientProvider)));
+final referralRepositoryProvider = Provider<ReferralRepository>(
+  (ref) => ReferralRepository(ref.watch(apiClientProvider)),
+);
 
 // ── Catalog ───────────────────────────────────────────────────────────────
 //
@@ -79,7 +79,10 @@ final packagesProvider = FutureProvider<List<CreditPackage>>((ref) {
   return ref.watch(catalogRepositoryProvider).packages();
 });
 
-final referralStatsProvider = FutureProvider((ref) => ref.watch(referralRepositoryProvider).stats());
+final referralStatsProvider = FutureProvider(
+  (ref) => ref.watch(referralRepositoryProvider).stats(),
+);
 
-final creditHistoryProvider =
-    FutureProvider((ref) => ref.watch(creditsRepositoryProvider).history());
+final creditHistoryProvider = FutureProvider(
+  (ref) => ref.watch(creditsRepositoryProvider).history(),
+);

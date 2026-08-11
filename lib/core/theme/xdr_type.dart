@@ -63,27 +63,22 @@ abstract final class XdrType {
 
   /// Onboarding headline. 33/300 with tight tracking.
   static TextStyle get hero => thai(
-        size: 33,
-        weight: FontWeight.w300,
-        color: XdrColors.textPrimary,
-        height: 1.28,
-        letterSpacing: -0.33,
-      );
+    size: 33,
+    weight: FontWeight.w300,
+    color: XdrColors.textPrimary,
+    height: 1.28,
+    letterSpacing: -0.33,
+  );
 
   /// The emphasised second line of the hero — lighter, italic, gradient-masked.
-  static TextStyle get heroAccent => hero.copyWith(
-        fontWeight: FontWeight.w200,
-        fontStyle: FontStyle.italic,
-      );
+  static TextStyle get heroAccent =>
+      hero.copyWith(fontWeight: FontWeight.w200, fontStyle: FontStyle.italic);
 
   static TextStyle pageTitle({double size = 21}) =>
       thai(size: size, weight: FontWeight.w300, color: XdrColors.textPrimary);
 
-  static TextStyle cardTitle({double size = 14, Color? color}) => thai(
-        size: size,
-        weight: FontWeight.w600,
-        color: color ?? XdrColors.textPrimary,
-      );
+  static TextStyle cardTitle({double size = 14, Color? color}) =>
+      thai(size: size, weight: FontWeight.w600, color: color ?? XdrColors.textPrimary);
 
   static TextStyle body({double size = 13.5, Color? color, double height = 1.6}) =>
       thai(size: size, color: color ?? XdrColors.textBody, height: height);
@@ -99,22 +94,21 @@ abstract final class XdrType {
 
   /// `X-DREAMER`, always uppercase and heavily tracked.
   static TextStyle wordmark({double size = 11, Color? color}) => latin(
-        size: size,
-        weight: FontWeight.w900,
-        color: color ?? XdrColors.textPrimary,
-        letterSpacing: size * 0.20,
-      );
+    size: size,
+    weight: FontWeight.w900,
+    color: color ?? XdrColors.textPrimary,
+    letterSpacing: size * 0.20,
+  );
 
-  static TextStyle tabLabel({Color? color}) =>
-      thai(size: 9.5, color: color ?? XdrColors.textDim);
+  static TextStyle tabLabel({Color? color}) => thai(size: 9.5, color: color ?? XdrColors.textDim);
 
   /// Big numbers on the profile stat cards; caller adds the coloured glow.
   static TextStyle statValue({double size = 24, required Color color}) => latin(
-        size: size,
-        weight: FontWeight.w700,
-        color: color,
-        shadows: [Shadow(color: color.withValues(alpha: 0.33), blurRadius: 22)],
-      );
+    size: size,
+    weight: FontWeight.w700,
+    color: color,
+    shadows: [Shadow(color: color.withValues(alpha: 0.33), blurRadius: 22)],
+  );
 
   static TextStyle price({double size = 21}) =>
       latin(size: size, weight: FontWeight.w700, color: XdrColors.textPrimary);

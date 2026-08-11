@@ -91,9 +91,7 @@ class _ResultMediaState extends State<ResultMedia> {
     if (_failed) {
       return const ColoredBox(
         color: XdrColors.wellFill,
-        child: Center(
-          child: Icon(Icons.videocam_off_outlined, color: XdrColors.textDim, size: 24),
-        ),
+        child: Center(child: Icon(Icons.videocam_off_outlined, color: XdrColors.textDim, size: 24)),
       );
     }
     if (player == null || !player.value.isInitialized) {

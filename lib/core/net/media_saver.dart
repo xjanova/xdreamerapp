@@ -13,10 +13,12 @@ import 'api_exception.dart';
 /// generation exists precisely so the app can nudge a download before the file
 /// is swept. These two actions are what make that possible.
 abstract final class MediaSaver {
-  static final _dio = Dio(BaseOptions(
-    connectTimeout: const Duration(seconds: 20),
-    receiveTimeout: const Duration(minutes: 3),
-  ));
+  static final _dio = Dio(
+    BaseOptions(
+      connectTimeout: const Duration(seconds: 20),
+      receiveTimeout: const Duration(minutes: 3),
+    ),
+  );
 
   static Future<File> _download(String url, {required bool isVideo}) async {
     final directory = await getTemporaryDirectory();

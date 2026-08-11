@@ -75,18 +75,18 @@ final routerProvider = Provider<GoRouter>((ref) {
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) => AppShell(shell: navigationShell),
         branches: [
-          StatefulShellBranch(routes: [
-            GoRoute(path: Routes.studio, builder: (_, __) => const StudioScreen()),
-          ]),
-          StatefulShellBranch(routes: [
-            GoRoute(path: Routes.works, builder: (_, __) => const WorksScreen()),
-          ]),
-          StatefulShellBranch(routes: [
-            GoRoute(path: Routes.community, builder: (_, __) => const CommunityScreen()),
-          ]),
-          StatefulShellBranch(routes: [
-            GoRoute(path: Routes.profile, builder: (_, __) => const ProfileScreen()),
-          ]),
+          StatefulShellBranch(
+            routes: [GoRoute(path: Routes.studio, builder: (_, __) => const StudioScreen())],
+          ),
+          StatefulShellBranch(
+            routes: [GoRoute(path: Routes.works, builder: (_, __) => const WorksScreen())],
+          ),
+          StatefulShellBranch(
+            routes: [GoRoute(path: Routes.community, builder: (_, __) => const CommunityScreen())],
+          ),
+          StatefulShellBranch(
+            routes: [GoRoute(path: Routes.profile, builder: (_, __) => const ProfileScreen())],
+          ),
         ],
       ),
 

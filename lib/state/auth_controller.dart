@@ -2,7 +2,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/net/api_exception.dart';
 import '../data/models/session.dart';
+import 'gallery_controller.dart';
 import 'providers.dart';
+import 'studio_controller.dart';
 
 /// Who is signed in, if anyone.
 ///
@@ -28,10 +30,9 @@ class AuthController extends AsyncNotifier<MobileSession?> {
   Future<void> signIn({required String email, required String password}) async {
     state = const AsyncValue.loading();
     try {
-      final session = await ref.read(authRepositoryProvider).login(
-            email: email,
-            password: password,
-          );
+      final session = await ref
+          .read(authRepositoryProvider)
+          .login(email: email, password: password);
       state = AsyncValue.data(session);
     } on ApiException catch (error, stack) {
       state = AsyncValue.error(error, stack);
@@ -41,8 +42,14 @@ class AuthController extends AsyncNotifier<MobileSession?> {
   Future<void> signOut() async {
     await ref.read(authRepositoryProvider).logout();
     state = const AsyncValue.data(null);
-    // Everything cached under the old identity has to go — the next account
-    // must not see the previous one's gallery or referral code.
+
+    // Everything cached under the old identity has to go. The gallery
+    // controllers are the ones that matter: they are a keyed family that
+    // outlives the session, so without this the next account to sign in on this
+    // phone would open ผลงานของฉัน and see the previous account's work.
+    // Invalidating a family provider clears every instance of it.
+    ref.invalidate(galleryControllerProvider);
+    ref.invalidate(studioControllerProvider);
     ref.invalidate(referralStatsProvider);
     ref.invalidate(creditHistoryProvider);
   }
@@ -91,8 +98,9 @@ class AuthController extends AsyncNotifier<MobileSession?> {
   }
 }
 
-final authControllerProvider =
-    AsyncNotifierProvider<AuthController, MobileSession?>(AuthController.new);
+final authControllerProvider = AsyncNotifierProvider<AuthController, MobileSession?>(
+  AuthController.new,
+);
 
 /// Convenience for widgets that only care about the balance.
 final creditBalanceProvider = Provider<int>((ref) {

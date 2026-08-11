@@ -14,7 +14,9 @@ enum GalleryFilter {
   image(labelTh: 'ภาพ', type: 'image'),
   video(labelTh: 'วิดีโอ', type: 'video'),
   favourites(labelTh: 'ที่ชื่นชอบ', favouritesOnly: true),
-  upscaled(labelTh: 'อัปสเกลแล้ว', type: 'edit');
+  // `edit` covers both inpainting and upscales — the API has one type for
+  // both, so labelling this "อัปสเกลแล้ว" alone would hide the edits.
+  edited(labelTh: 'แก้ไข/อัปสเกล', type: 'edit');
 
   const GalleryFilter({required this.labelTh, this.type, this.favouritesOnly = false});
 
@@ -23,10 +25,16 @@ enum GalleryFilter {
   final bool favouritesOnly;
 }
 
+/// Matches the `sort` values `/api/gallery` accepts.
+///
+/// The design named the third tab "ติดตาม" (following). There is nothing to
+/// follow — the platform has no social graph — so it is labelled for what the
+/// server actually does: rank by favourites across all time rather than the
+/// last seven days.
 enum GallerySort {
+  trending('trending', 'กำลังมาแรง'),
   newest('newest', 'ล่าสุด'),
-  trending('trending', 'ยอดนิยม'),
-  top('top', 'ติดตาม');
+  top('top', 'ยอดนิยมตลอดกาล');
 
   const GallerySort(this.value, this.labelTh);
 

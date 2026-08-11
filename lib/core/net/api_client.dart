@@ -17,8 +17,8 @@ import 'token_store.dart';
 ///   which would 401, forever.
 class ApiClient {
   ApiClient({required TokenStore tokens, required VoidCallback onSessionLost})
-      : _tokens = tokens,
-        _onSessionLost = onSessionLost {
+    : _tokens = tokens,
+      _onSessionLost = onSessionLost {
     AppConfig.assertTransportIsSafe();
     _authed.interceptors.add(
       InterceptorsWrapper(onRequest: _attachToken, onError: _recoverOrGiveUp),
@@ -35,16 +35,16 @@ class ApiClient {
   final VoidCallback _onSessionLost;
 
   static BaseOptions _options() => BaseOptions(
-        baseUrl: AppConfig.apiBaseUrl,
-        connectTimeout: const Duration(seconds: 15),
-        // Generous: `POST /api/generate` blocks until a synchronous provider
-        // returns, and an image can take 40s on a busy pool.
-        receiveTimeout: const Duration(seconds: 90),
-        sendTimeout: const Duration(seconds: 60),
-        headers: const {'Accept': 'application/json'},
-        // Let the interceptor decide what a non-2xx means.
-        validateStatus: (status) => status != null && status >= 200 && status < 300,
-      );
+    baseUrl: AppConfig.apiBaseUrl,
+    connectTimeout: const Duration(seconds: 15),
+    // Generous: `POST /api/generate` blocks until a synchronous provider
+    // returns, and an image can take 40s on a busy pool.
+    receiveTimeout: const Duration(seconds: 90),
+    sendTimeout: const Duration(seconds: 60),
+    headers: const {'Accept': 'application/json'},
+    // Let the interceptor decide what a non-2xx means.
+    validateStatus: (status) => status != null && status >= 200 && status < 300,
+  );
 
   final Dio _authed = Dio(_options());
   final Dio _plain = Dio(_options());
@@ -93,8 +93,7 @@ class ApiClient {
   /// screen. They all wait on one refresh rather than racing to burn the
   /// refresh token three times.
   Future<bool> _refreshOnce() {
-    return _refreshInFlight ??=
-        _performRefresh().whenComplete(() => _refreshInFlight = null);
+    return _refreshInFlight ??= _performRefresh().whenComplete(() => _refreshInFlight = null);
   }
 
   Future<bool> _performRefresh() async {
@@ -124,29 +123,23 @@ class ApiClient {
     String path, {
     Map<String, dynamic>? query,
     CancelToken? cancelToken,
-  }) =>
-      _send(() => _authed.get<dynamic>(path, queryParameters: query, cancelToken: cancelToken));
+  }) => _send(() => _authed.get<dynamic>(path, queryParameters: query, cancelToken: cancelToken));
 
   Future<Map<String, dynamic>> postJson(
     String path, {
     Object? body,
     CancelToken? cancelToken,
     Duration? receiveTimeout,
-  }) =>
-      _send(() => _authed.post<dynamic>(
-            path,
-            data: body,
-            cancelToken: cancelToken,
-            options: receiveTimeout == null
-                ? null
-                : Options(receiveTimeout: receiveTimeout),
-          ));
+  }) => _send(
+    () => _authed.post<dynamic>(
+      path,
+      data: body,
+      cancelToken: cancelToken,
+      options: receiveTimeout == null ? null : Options(receiveTimeout: receiveTimeout),
+    ),
+  );
 
-  Future<Map<String, dynamic>> deleteJson(
-    String path, {
-    Object? body,
-    CancelToken? cancelToken,
-  }) =>
+  Future<Map<String, dynamic>> deleteJson(String path, {Object? body, CancelToken? cancelToken}) =>
       _send(() => _authed.delete<dynamic>(path, data: body, cancelToken: cancelToken));
 
   Future<Map<String, dynamic>> _send(Future<Response<dynamic>> Function() call) async {
@@ -168,15 +161,19 @@ class ApiClient {
 class _TerseLogInterceptor extends Interceptor {
   @override
   void onResponse(Response<dynamic> response, ResponseInterceptorHandler handler) {
-    debugPrint('[api] ${response.requestOptions.method} '
-        '${response.requestOptions.path} → ${response.statusCode}');
+    debugPrint(
+      '[api] ${response.requestOptions.method} '
+      '${response.requestOptions.path} → ${response.statusCode}',
+    );
     handler.next(response);
   }
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
-    debugPrint('[api] ${err.requestOptions.method} ${err.requestOptions.path} '
-        '→ ${err.response?.statusCode ?? err.type.name}');
+    debugPrint(
+      '[api] ${err.requestOptions.method} ${err.requestOptions.path} '
+      '→ ${err.response?.statusCode ?? err.type.name}',
+    );
     handler.next(err);
   }
 }

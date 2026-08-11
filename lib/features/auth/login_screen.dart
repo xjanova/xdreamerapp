@@ -57,10 +57,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     if (!_validate()) return;
 
     FocusScope.of(context).unfocus();
-    await ref.read(authControllerProvider.notifier).signIn(
-          email: _email.text,
-          password: _password.text,
-        );
+    await ref
+        .read(authControllerProvider.notifier)
+        .signIn(email: _email.text, password: _password.text);
     // Routing to the studio is the router's job — it redirects as soon as the
     // auth state carries a session.
   }
@@ -101,7 +100,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   children: [
                     const BrandMark(size: 64, radius: 19, glow: 22),
                     const SizedBox(height: 12),
-                    Text('X-DREAMER', style: XdrType.wordmark(size: 12).copyWith(shadows: engraved)),
+                    Text(
+                      'X-DREAMER',
+                      style: XdrType.wordmark(size: 12).copyWith(shadows: engraved),
+                    ),
                     const SizedBox(height: 22),
                     MetalSurface(
                       radius: 22,
@@ -185,9 +187,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             onPressed: busy
                                 ? null
                                 : () => launchUrl(
-                                      Uri.parse('${AppConfig.xmanBaseUrl}/password/reset'),
-                                      mode: LaunchMode.externalApplication,
-                                    ),
+                                    Uri.parse('${AppConfig.xmanBaseUrl}/password/reset'),
+                                    mode: LaunchMode.externalApplication,
+                                  ),
                           ),
                         ],
                       ),
@@ -198,9 +200,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       onTap: busy
                           ? null
                           : () => launchUrl(
-                                AppConfig.registerUrl,
-                                mode: LaunchMode.externalApplication,
-                              ),
+                              AppConfig.registerUrl,
+                              mode: LaunchMode.externalApplication,
+                            ),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
                         child: Text.rich(

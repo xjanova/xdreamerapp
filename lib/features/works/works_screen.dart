@@ -138,9 +138,7 @@ class _WorksScreenState extends ConsumerState<WorksScreen> {
               SliverFillRemaining(
                 hasScrollBody: false,
                 child: EmptyState(
-                  title: _filter == GalleryFilter.all
-                      ? 'ยังไม่มีผลงาน'
-                      : 'ไม่มีผลงานในหมวดนี้',
+                  title: _filter == GalleryFilter.all ? 'ยังไม่มีผลงาน' : 'ไม่มีผลงานในหมวดนี้',
                   body: 'เริ่มจากใส่คำอธิบายภาพที่อยากได้ในสตูดิโอ แล้วกดสร้าง',
                   actionLabel: 'ไปที่สตูดิโอ',
                   onAction: () => context.go(Routes.studio),
@@ -158,22 +156,22 @@ class _WorksScreenState extends ConsumerState<WorksScreen> {
                     // a fixed 3:4 keeps the grid honest and the scroll smooth.
                     childAspectRatio: 0.78,
                   ),
-                  delegate: SliverChildBuilderDelegate(
-                    childCount: state.items.length,
-                    (context, i) {
-                      final item = state.items[i];
-                      return WorkCard(
+                  delegate: SliverChildBuilderDelegate(childCount: state.items.length, (
+                    context,
+                    i,
+                  ) {
+                    final item = state.items[i];
+                    return WorkCard(
+                      item: item,
+                      height: double.infinity,
+                      onTap: () => WorkViewer.open(
+                        context,
                         item: item,
-                        height: double.infinity,
-                        onTap: () => WorkViewer.open(
-                          context,
-                          item: item,
-                          onToggleFavourite: () => controller.toggleFavourite(item),
-                        ),
                         onToggleFavourite: () => controller.toggleFavourite(item),
-                      );
-                    },
-                  ),
+                      ),
+                      onToggleFavourite: () => controller.toggleFavourite(item),
+                    );
+                  }),
                 ),
               ),
 
@@ -189,12 +187,12 @@ class _WorksScreenState extends ConsumerState<WorksScreen> {
                         ),
                       )
                     : state.hasMore
-                        ? GhostButton(
-                            label: 'โหลดเพิ่ม · Load more',
-                            fontSize: 13,
-                            onPressed: controller.loadMore,
-                          )
-                        : const SizedBox.shrink(),
+                    ? GhostButton(
+                        label: 'โหลดเพิ่ม · Load more',
+                        fontSize: 13,
+                        onPressed: controller.loadMore,
+                      )
+                    : const SizedBox.shrink(),
               ),
             ),
           ],

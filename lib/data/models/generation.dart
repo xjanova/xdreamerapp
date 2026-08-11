@@ -147,27 +147,27 @@ class Generation {
   }
 
   Generation copyWith({bool? isFavorited, int? favoritesCount}) => Generation(
-        id: id,
-        status: status,
-        type: type,
-        prompt: prompt,
-        resultUrl: resultUrl,
-        resultUrls: resultUrls,
-        thumbnailUrl: thumbnailUrl,
-        creditsUsed: creditsUsed,
-        creditsRefunded: creditsRefunded,
-        processingMs: processingMs,
-        errorMessage: errorMessage,
-        expiresAt: expiresAt,
-        daysLeft: daysLeft,
-        mediaDeleted: mediaDeleted,
-        isFavorited: isFavorited ?? this.isFavorited,
-        favoritesCount: favoritesCount ?? this.favoritesCount,
-        modelName: modelName,
-        providerName: providerName,
-        createdAt: createdAt,
-        gpu: gpu,
-      );
+    id: id,
+    status: status,
+    type: type,
+    prompt: prompt,
+    resultUrl: resultUrl,
+    resultUrls: resultUrls,
+    thumbnailUrl: thumbnailUrl,
+    creditsUsed: creditsUsed,
+    creditsRefunded: creditsRefunded,
+    processingMs: processingMs,
+    errorMessage: errorMessage,
+    expiresAt: expiresAt,
+    daysLeft: daysLeft,
+    mediaDeleted: mediaDeleted,
+    isFavorited: isFavorited ?? this.isFavorited,
+    favoritesCount: favoritesCount ?? this.favoritesCount,
+    modelName: modelName,
+    providerName: providerName,
+    createdAt: createdAt,
+    gpu: gpu,
+  );
 }
 
 /// One page of `/api/gallery`.
@@ -187,11 +187,11 @@ class GalleryPage {
   bool get hasMore => page < pages;
 
   factory GalleryPage.fromJson(Map<String, dynamic> json) => GalleryPage(
-        items: json.objList('data').map(Generation.fromJson).toList(),
-        page: json.intVal('page', 1),
-        pages: json.intVal('pages', 1),
-        total: json.intVal('total'),
-      );
+    items: json.objList('data').map(Generation.fromJson).toList(),
+    page: json.intVal('page', 1),
+    pages: json.intVal('pages', 1),
+    total: json.intVal('total'),
+  );
 }
 
 /// A row of `ai_credit_transactions`.
@@ -217,11 +217,11 @@ class CreditTransaction {
   bool get isCredit => amount > 0;
 
   factory CreditTransaction.fromJson(Map<String, dynamic> json) => CreditTransaction(
-        id: json.intVal('id'),
-        type: json.str('type'),
-        amount: json.intVal('amount'),
-        balanceAfter: json.intVal('balanceAfter'),
-        description: json.strOrNull('description'),
-        createdAt: json.date('createdAt'),
-      );
+    id: json.intVal('id'),
+    type: json.str('type'),
+    amount: json.intVal('amount'),
+    balanceAfter: json.intVal('balanceAfter'),
+    description: json.strOrNull('description'),
+    createdAt: json.date('createdAt'),
+  );
 }

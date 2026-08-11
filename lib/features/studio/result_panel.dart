@@ -50,40 +50,40 @@ class _ResultPanelState extends ConsumerState<ResultPanel> {
   bool get _isVideo => widget.state.job?.isVideo ?? false;
 
   Future<void> _download() => _run(() async {
-        final url = _current;
-        if (url == null) return;
-        final message = await MediaSaver.saveToGallery(url, isVideo: _isVideo);
-        if (mounted) showXdrToast(context, message);
-      });
+    final url = _current;
+    if (url == null) return;
+    final message = await MediaSaver.saveToGallery(url, isVideo: _isVideo);
+    if (mounted) showXdrToast(context, message);
+  });
 
   Future<void> _share() => _run(() async {
-        final url = _current;
-        if (url == null) return;
-        await MediaSaver.share(url, isVideo: _isVideo, caption: widget.state.prompt.trim());
-      });
+    final url = _current;
+    if (url == null) return;
+    await MediaSaver.share(url, isVideo: _isVideo, caption: widget.state.prompt.trim());
+  });
 
   Future<void> _favourite() => _run(() async {
-        final job = widget.state.job;
-        if (job == null) return;
-        await ref.read(galleryRepositoryProvider).favourite(job.id);
-        if (!mounted) return;
-        setState(() => _favourited = true);
-        showXdrToast(context, 'บันทึกไว้ในผลงานที่ชื่นชอบแล้ว');
-      });
+    final job = widget.state.job;
+    if (job == null) return;
+    await ref.read(galleryRepositoryProvider).favourite(job.id);
+    if (!mounted) return;
+    setState(() => _favourited = true);
+    showXdrToast(context, 'บันทึกไว้ในผลงานที่ชื่นชอบแล้ว');
+  });
 
   Future<void> _upscale() => _run(() async {
-        final job = widget.state.job;
-        if (job == null) return;
-        final result = await ref.read(generationRepositoryProvider).upscale(generationId: job.id);
-        await ref.read(authControllerProvider.notifier).refreshCredits();
-        if (!mounted) return;
-        showXdrToast(
-          context,
-          result.succeeded
-              ? 'อัปสเกลเสร็จแล้ว ดูได้ที่ผลงานของฉัน'
-              : 'ส่งงานอัปสเกลแล้ว จะปรากฏที่ผลงานของฉันเมื่อเสร็จ',
-        );
-      });
+    final job = widget.state.job;
+    if (job == null) return;
+    final result = await ref.read(generationRepositoryProvider).upscale(generationId: job.id);
+    await ref.read(authControllerProvider.notifier).refreshCredits();
+    if (!mounted) return;
+    showXdrToast(
+      context,
+      result.succeeded
+          ? 'อัปสเกลเสร็จแล้ว ดูได้ที่ผลงานของฉัน'
+          : 'ส่งงานอัปสเกลแล้ว จะปรากฏที่ผลงานของฉันเมื่อเสร็จ',
+    );
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -142,13 +142,10 @@ class _ResultPanelState extends ConsumerState<ResultPanel> {
                         color: XdrColors.inkwell.withValues(alpha: 0.65),
                         border: Border.all(color: XdrColors.ice.withValues(alpha: 0.3)),
                       ),
-                      child: Text(
-                        () {
-                          final (w, h) = aspect.sizeFor(widget.model);
-                          return '$w × $h';
-                        }(),
-                        style: XdrType.label(size: 10, color: XdrColors.ice),
-                      ),
+                      child: Text(() {
+                        final (w, h) = aspect.sizeFor(widget.model);
+                        return '$w × $h';
+                      }(), style: XdrType.label(size: 10, color: XdrColors.ice)),
                     ),
                   ),
                 ],
@@ -167,15 +164,12 @@ class _ResultPanelState extends ConsumerState<ResultPanel> {
                       child: PressSink(
                         radius: 11,
                         depth: 2,
-                        onTap: () =>
-                            ref.read(studioControllerProvider.notifier).selectFrame(url),
+                        onTap: () => ref.read(studioControllerProvider.notifier).selectFrame(url),
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(11),
                             border: Border.all(
-                              color: url == _current
-                                  ? XdrColors.ice
-                                  : XdrColors.hairline,
+                              color: url == _current ? XdrColors.ice : XdrColors.hairline,
                               width: url == _current ? 1.5 : 1,
                             ),
                             boxShadow: url == _current
@@ -183,7 +177,7 @@ class _ResultPanelState extends ConsumerState<ResultPanel> {
                                     BoxShadow(
                                       color: XdrColors.ice.withValues(alpha: 0.35),
                                       blurRadius: 16,
-                                    )
+                                    ),
                                   ]
                                 : null,
                           ),

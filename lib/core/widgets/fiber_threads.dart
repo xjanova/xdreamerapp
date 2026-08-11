@@ -174,13 +174,11 @@ class _Thread {
   final double saturation;
   final double lightness;
 
-  Color get color =>
-      HSLColor.fromAHSL(1, hue, saturation, lightness).toColor();
+  Color get color => HSLColor.fromAHSL(1, hue, saturation, lightness).toColor();
 
   /// The +20° companion hue that makes the middle of each filament read as a
   /// different metal from its ends.
-  Color get midColor =>
-      HSLColor.fromAHSL(1, (hue + 20) % 360, saturation, lightness).toColor();
+  Color get midColor => HSLColor.fromAHSL(1, (hue + 20) % 360, saturation, lightness).toColor();
 }
 
 class _FiberPainter extends CustomPainter {
@@ -199,22 +197,26 @@ class _FiberPainter extends CustomPainter {
     final t = clock.value;
 
     for (final thread in threads) {
-      final p0 = _at(thread.start, size) +
+      final p0 =
+          _at(thread.start, size) +
           Offset(
             math.sin(t * thread.f3 + thread.phase) * _endpointSwing,
             math.cos(t * thread.f1 + thread.phase) * _endpointSwing,
           );
-      final p3 = _at(thread.end, size) +
+      final p3 =
+          _at(thread.end, size) +
           Offset(
             math.cos(t * thread.f1 + thread.phase) * _endpointSwing,
             math.sin(t * thread.f2 + thread.phase) * _endpointSwing,
           );
-      final c1 = _at(thread.control1, size) +
+      final c1 =
+          _at(thread.control1, size) +
           Offset(
             math.sin(t * thread.f1 + thread.phase) * _controlSwing,
             math.cos(t * thread.f2 + thread.phase) * _controlSwing,
           );
-      final c2 = _at(thread.control2, size) +
+      final c2 =
+          _at(thread.control2, size) +
           Offset(
             math.cos(t * thread.f2 + thread.phase) * _controlSwing,
             math.sin(t * thread.f3 + thread.phase) * _controlSwing,
@@ -257,8 +259,7 @@ class _FiberPainter extends CustomPainter {
       Offset(fraction.dx * size.width, fraction.dy * size.height);
 
   @override
-  bool shouldRepaint(covariant _FiberPainter oldDelegate) =>
-      oldDelegate.threads != threads;
+  bool shouldRepaint(covariant _FiberPainter oldDelegate) => oldDelegate.threads != threads;
 }
 
 /// The three-layer ground every screen sits on: base colour, the thread field,
@@ -285,11 +286,7 @@ class XdrBackdrop extends StatelessWidget {
                   gradient: RadialGradient(
                     center: Alignment(0, -0.56),
                     radius: 1.1,
-                    colors: [
-                      Color(0x59030612),
-                      Color(0xD1030612),
-                      Color(0xF5030612),
-                    ],
+                    colors: [Color(0x59030612), Color(0xD1030612), Color(0xF5030612)],
                     stops: [0.0, 0.58, 1.0],
                   ),
                 ),

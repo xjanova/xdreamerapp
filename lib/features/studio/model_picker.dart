@@ -37,9 +37,7 @@ Future<void> showModelPicker({
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
         child: Container(
-          constraints: BoxConstraints(
-            maxHeight: MediaQuery.sizeOf(sheetContext).height * 0.75,
-          ),
+          constraints: BoxConstraints(maxHeight: MediaQuery.sizeOf(sheetContext).height * 0.75),
           decoration: const BoxDecoration(
             color: Color(0xF70B1020),
             border: Border(top: BorderSide(color: XdrColors.hairlineStrong)),

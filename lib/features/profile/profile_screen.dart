@@ -205,7 +205,10 @@ class ProfileScreen extends ConsumerWidget {
                                 // made-up monthly figure would be a lie.
                                 '${groupDigits(credits.totalUsed)} / ${groupDigits(granted)}',
                                 style: XdrType.latin(
-                                    size: 12, weight: FontWeight.w600, color: XdrColors.ice),
+                                  size: 12,
+                                  weight: FontWeight.w600,
+                                  color: XdrColors.ice,
+                                ),
                               ),
                             ],
                           ),
@@ -224,7 +227,7 @@ class ProfileScreen extends ConsumerWidget {
                                         colors: [
                                           XdrColors.emerald,
                                           XdrColors.cyan,
-                                          XdrColors.violet
+                                          XdrColors.violet,
                                         ],
                                       ),
                                       boxShadow: [
@@ -440,9 +443,7 @@ class _MenuRow extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 14),
         decoration: BoxDecoration(
-          border: isLast
-              ? null
-              : const Border(bottom: BorderSide(color: Color(0x0DFFFFFF))),
+          border: isLast ? null : const Border(bottom: BorderSide(color: Color(0x0DFFFFFF))),
         ),
         child: Row(
           children: [

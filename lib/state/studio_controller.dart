@@ -276,7 +276,9 @@ class StudioController extends Notifier<StudioState> {
     final (width, height) = state.aspect.sizeFor(model);
 
     try {
-      final job = await ref.read(generationRepositoryProvider).create(
+      final job = await ref
+          .read(generationRepositoryProvider)
+          .create(
             modelId: model.id,
             type: state.mode.apiType,
             prompt: state.prompt.trim(),
@@ -317,15 +319,18 @@ class StudioController extends Notifier<StudioState> {
   }
 
   void _watch(int id) {
-    _watcher = ref.read(generationRepositoryProvider).watch(id).listen(
-      _adopt,
-      onError: (Object error) {
-        state = state.copyWith(
-          submitting: false,
-          error: () => ApiException.from(error).message,
+    _watcher = ref
+        .read(generationRepositoryProvider)
+        .watch(id)
+        .listen(
+          _adopt,
+          onError: (Object error) {
+            state = state.copyWith(
+              submitting: false,
+              error: () => ApiException.from(error).message,
+            );
+          },
         );
-      },
-    );
   }
 
   void _adopt(Generation job) {
@@ -338,8 +343,8 @@ class StudioController extends Notifier<StudioState> {
       selectedFrame: () => job.frames.isEmpty ? null : job.frames.first,
       error: () => finished && !job.succeeded
           ? (job.creditsRefunded
-              ? 'สร้างไม่สำเร็จ ระบบคืนเครดิตให้แล้ว'
-              : 'สร้างไม่สำเร็จ กรุณาลองใหม่')
+                ? 'สร้างไม่สำเร็จ ระบบคืนเครดิตให้แล้ว'
+                : 'สร้างไม่สำเร็จ กรุณาลองใหม่')
           : null,
     );
 
@@ -387,5 +392,6 @@ class StudioController extends Notifier<StudioState> {
   }
 }
 
-final studioControllerProvider =
-    NotifierProvider<StudioController, StudioState>(StudioController.new);
+final studioControllerProvider = NotifierProvider<StudioController, StudioState>(
+  StudioController.new,
+);

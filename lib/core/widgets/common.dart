@@ -28,7 +28,11 @@ class GradientText extends StatelessWidget {
     return ShaderMask(
       blendMode: BlendMode.srcIn,
       shaderCallback: (bounds) => gradient.createShader(Offset.zero & bounds.size),
-      child: Text(text, style: style.copyWith(color: Colors.white), textAlign: textAlign),
+      child: Text(
+        text,
+        style: style.copyWith(color: Colors.white),
+        textAlign: textAlign,
+      ),
     );
   }
 }
@@ -101,11 +105,7 @@ class BrandButton extends StatelessWidget {
         onTap: enabled ? onPressed : null,
         child: Sheen(
           radius: radius,
-          child: MetalSurface(
-            finish: MetalFinish.knob,
-            radius: radius,
-            child: content,
-          ),
+          child: MetalSurface(finish: MetalFinish.knob, radius: radius, child: content),
         ),
       ),
     );
@@ -144,8 +144,11 @@ class GhostButton extends StatelessWidget {
         child: Center(
           child: Text(
             label,
-            style: XdrType.thai(size: fontSize, color: color, weight: FontWeight.w500)
-                .copyWith(shadows: engraved),
+            style: XdrType.thai(
+              size: fontSize,
+              color: color,
+              weight: FontWeight.w500,
+            ).copyWith(shadows: engraved),
           ),
         ),
       ),
@@ -156,12 +159,7 @@ class GhostButton extends StatelessWidget {
 /// A remote image with the app's own placeholder and failure states — never a
 /// grey box and never a broken-image glyph.
 class RemoteArt extends StatelessWidget {
-  const RemoteArt({
-    super.key,
-    required this.url,
-    this.fit = BoxFit.cover,
-    this.radius = 0,
-  });
+  const RemoteArt({super.key, required this.url, this.fit = BoxFit.cover, this.radius = 0});
 
   final String? url;
   final BoxFit fit;
@@ -192,7 +190,11 @@ class _ArtFallback extends StatelessWidget {
     return DecoratedBox(
       decoration: const BoxDecoration(gradient: XdrColors.sunkFace),
       child: Center(
-        child: Icon(Icons.auto_awesome_outlined, size: 22, color: XdrColors.textDim.withValues(alpha: 0.6)),
+        child: Icon(
+          Icons.auto_awesome_outlined,
+          size: 22,
+          color: XdrColors.textDim.withValues(alpha: 0.6),
+        ),
       ),
     );
   }
@@ -283,10 +285,7 @@ class ErrorPanel extends StatelessWidget {
               const Icon(Icons.error_outline, size: 17, color: XdrColors.danger),
               const SizedBox(width: 8),
               Expanded(
-                child: Text(
-                  message,
-                  style: XdrType.body(size: 12.5, color: XdrColors.danger),
-                ),
+                child: Text(message, style: XdrType.body(size: 12.5, color: XdrColors.danger)),
               ),
             ],
           ),

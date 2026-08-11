@@ -33,21 +33,24 @@ const _slides = <_Slide>[
     art: 'assets/showcase/hero-reel.jpg',
     headline: 'ทอความฝันจาก',
     accent: 'เส้นใยแห่งความคิด',
-    sub: 'Weave your dreams from threads of thought.\n'
+    sub:
+        'Weave your dreams from threads of thought.\n'
         '9 providers · 40+ models · image, video, edit, upscale.',
   ),
   _Slide(
     art: 'assets/showcase/city.jpg',
     headline: 'ห้าโหมด',
     accent: 'ในสตูดิโอเดียว',
-    sub: 'ภาพ · วิดีโอ · ภาพ→วิดีโอ · แก้ไข · อัปสเกล 4K\n'
+    sub:
+        'ภาพ · วิดีโอ · ภาพ→วิดีโอ · แก้ไข · อัปสเกล 4K\n'
         'เลือกโมเดลที่เหมาะกับงาน ระบบจัดคิวและสลับผู้ให้บริการให้เอง',
   ),
   _Slide(
     art: 'assets/showcase/pricing-hero.jpg',
     headline: 'จ่ายเท่าที่ใช้',
     accent: 'ไม่มีรายเดือน',
-    sub: 'เติมเครดิตครั้งเดียว ใช้ได้กับทุกโมเดล\n'
+    sub:
+        'เติมเครดิตครั้งเดียว ใช้ได้กับทุกโมเดล\n'
         'ใช้บัญชีเดียวกับ xman4289.com ผลงานอยู่ที่เดิมทุกเครื่อง',
   ),
 ];
@@ -136,10 +139,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                         onPressed: () => _toLogin(register: true),
                       ),
                       const SizedBox(height: 10),
-                      GhostButton(
-                        label: 'มีบัญชีแล้ว · Sign in',
-                        onPressed: _toLogin,
-                      ),
+                      GhostButton(label: 'มีบัญชีแล้ว · Sign in', onPressed: _toLogin),
                     ],
                   ),
                 ),

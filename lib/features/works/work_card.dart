@@ -24,10 +24,10 @@ class WorkCard extends StatelessWidget {
   final bool showFavouriteCount;
 
   String get _kindBadge => switch (item.type) {
-        'video' => 'VIDEO',
-        'edit' => '4K',
-        _ => 'IMAGE',
-      };
+    'video' => 'VIDEO',
+    'edit' => '4K',
+    _ => 'IMAGE',
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -139,9 +139,7 @@ class WorkCard extends StatelessWidget {
                         color: XdrColors.inkwell.withValues(alpha: 0.55),
                       ),
                       child: Icon(
-                        item.isFavorited
-                            ? Icons.favorite_rounded
-                            : Icons.favorite_border_rounded,
+                        item.isFavorited ? Icons.favorite_rounded : Icons.favorite_border_rounded,
                         size: 14,
                         color: item.isFavorited ? XdrColors.danger : Colors.white,
                       ),

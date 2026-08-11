@@ -17,12 +17,12 @@ class ReferredFriend {
   final DateTime? joinedAt;
 
   factory ReferredFriend.fromJson(Map<String, dynamic> json) => ReferredFriend(
-        id: json.intVal('id'),
-        name: json.str('referredName', 'ผู้ใช้'),
-        totalCommission: json.intVal('totalCommission'),
-        bonusCredits: json.intVal('bonusCredits'),
-        joinedAt: json.date('joinedAt'),
-      );
+    id: json.intVal('id'),
+    name: json.str('referredName', 'ผู้ใช้'),
+    totalCommission: json.intVal('totalCommission'),
+    bonusCredits: json.intVal('bonusCredits'),
+    joinedAt: json.date('joinedAt'),
+  );
 }
 
 /// `GET /api/referral`.
@@ -37,12 +37,12 @@ class ReferralStats {
   });
 
   const ReferralStats.empty()
-      : code = '',
-        totalReferred = 0,
-        totalCommission = 0,
-        pendingCommission = 0,
-        commissionRate = 10,
-        friends = const [];
+    : code = '',
+      totalReferred = 0,
+      totalCommission = 0,
+      pendingCommission = 0,
+      commissionRate = 10,
+      friends = const [];
 
   final String code;
   final int totalReferred;
@@ -61,11 +61,11 @@ class ReferralStats {
   int get activeFriends => friends.where((f) => f.totalCommission > 0).length;
 
   factory ReferralStats.fromJson(Map<String, dynamic> json) => ReferralStats(
-        code: json.str('referralCode'),
-        totalReferred: json.intVal('totalReferred'),
-        totalCommission: json.intVal('totalCommission'),
-        pendingCommission: json.intVal('pendingCommission'),
-        commissionRate: json.intVal('commissionRate', 10),
-        friends: json.objList('referrals').map(ReferredFriend.fromJson).toList(),
-      );
+    code: json.str('referralCode'),
+    totalReferred: json.intVal('totalReferred'),
+    totalCommission: json.intVal('totalCommission'),
+    pendingCommission: json.intVal('pendingCommission'),
+    commissionRate: json.intVal('commissionRate', 10),
+    friends: json.objList('referrals').map(ReferredFriend.fromJson).toList(),
+  );
 }

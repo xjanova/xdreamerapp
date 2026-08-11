@@ -76,28 +76,31 @@ class _UpdateSheetState extends ConsumerState<_UpdateSheet> {
       _progress = const DownloadProgress(received: 0, total: 0);
     });
 
-    _download = ref.read(updateRepositoryProvider).downloadAndInstall(_info).listen(
-      (progress) {
-        if (mounted) setState(() => _progress = progress);
-      },
-      onError: (Object error) {
-        if (!mounted) return;
-        setState(() {
-          _error = ApiException.from(error).message;
-          _progress = null;
-          _download = null;
-        });
-      },
-      onDone: () {
-        if (!mounted) return;
-        // The system installer is now in front of the user; the sheet stays so
-        // they can retry if they dismiss it.
-        setState(() {
-          _done = true;
-          _download = null;
-        });
-      },
-    );
+    _download = ref
+        .read(updateRepositoryProvider)
+        .downloadAndInstall(_info)
+        .listen(
+          (progress) {
+            if (mounted) setState(() => _progress = progress);
+          },
+          onError: (Object error) {
+            if (!mounted) return;
+            setState(() {
+              _error = ApiException.from(error).message;
+              _progress = null;
+              _download = null;
+            });
+          },
+          onDone: () {
+            if (!mounted) return;
+            // The system installer is now in front of the user; the sheet stays so
+            // they can retry if they dismiss it.
+            setState(() {
+              _done = true;
+              _download = null;
+            });
+          },
+        );
   }
 
   @override
@@ -147,8 +150,7 @@ class _UpdateSheetState extends ConsumerState<_UpdateSheet> {
                   ),
                   Text(
                     'v${_info.version}',
-                    style: XdrType.latin(
-                        size: 12, weight: FontWeight.w600, color: XdrColors.ice),
+                    style: XdrType.latin(size: 12, weight: FontWeight.w600, color: XdrColors.ice),
                   ),
                 ],
               ),
@@ -164,9 +166,7 @@ class _UpdateSheetState extends ConsumerState<_UpdateSheet> {
               if (_info.releaseNotes.isNotEmpty) ...[
                 const SizedBox(height: 14),
                 ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxHeight: MediaQuery.sizeOf(context).height * 0.28,
-                  ),
+                  constraints: BoxConstraints(maxHeight: MediaQuery.sizeOf(context).height * 0.28),
                   child: MetalSurface(
                     finish: MetalFinish.sunk,
                     radius: 14,
@@ -181,10 +181,7 @@ class _UpdateSheetState extends ConsumerState<_UpdateSheet> {
                 ),
               ],
 
-              if (_error != null) ...[
-                const SizedBox(height: 14),
-                ErrorPanel(message: _error!),
-              ],
+              if (_error != null) ...[const SizedBox(height: 14), ErrorPanel(message: _error!)],
 
               if (downloading) ...[
                 const SizedBox(height: 16),
@@ -204,8 +201,7 @@ class _UpdateSheetState extends ConsumerState<_UpdateSheet> {
                     const SizedBox(width: 10),
                     Text(
                       _progress!.total > 0 ? '${_progress!.percent}%' : 'กำลังเริ่ม…',
-                      style: XdrType.latin(
-                          size: 12, weight: FontWeight.w600, color: XdrColors.ice),
+                      style: XdrType.latin(size: 12, weight: FontWeight.w600, color: XdrColors.ice),
                     ),
                   ],
                 ),

@@ -32,9 +32,7 @@ abstract final class AppConfig {
   /// builds may, so a `next dev` server on the LAN is reachable.
   static void assertTransportIsSafe() {
     if (kReleaseMode && !apiBaseUrl.startsWith('https://')) {
-      throw StateError(
-        'XDR_API_BASE must be https:// in a release build (got: $apiBaseUrl)',
-      );
+      throw StateError('XDR_API_BASE must be https:// in a release build (got: $apiBaseUrl)');
     }
   }
 }

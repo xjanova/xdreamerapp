@@ -110,7 +110,8 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
                                   borderRadius: BorderRadius.circular(2),
                                   gradient: sort == _sort
                                       ? const LinearGradient(
-                                          colors: [XdrColors.cyan, XdrColors.violet])
+                                          colors: [XdrColors.cyan, XdrColors.violet],
+                                        )
                                       : null,
                                 ),
                               ),
@@ -200,22 +201,19 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
                     crossAxisSpacing: 10,
                     childAspectRatio: 0.78,
                   ),
-                  delegate: SliverChildBuilderDelegate(
-                    childCount: rest.length,
-                    (context, i) {
-                      final item = rest[i];
-                      return WorkCard(
+                  delegate: SliverChildBuilderDelegate(childCount: rest.length, (context, i) {
+                    final item = rest[i];
+                    return WorkCard(
+                      item: item,
+                      height: double.infinity,
+                      showFavouriteCount: true,
+                      onTap: () => WorkViewer.open(
+                        context,
                         item: item,
-                        height: double.infinity,
-                        showFavouriteCount: true,
-                        onTap: () => WorkViewer.open(
-                          context,
-                          item: item,
-                          onToggleFavourite: () => controller.toggleFavourite(item),
-                        ),
-                      );
-                    },
-                  ),
+                        onToggleFavourite: () => controller.toggleFavourite(item),
+                      ),
+                    );
+                  }),
                 ),
               ),
             ],
@@ -325,11 +323,12 @@ class _FeaturedCard extends StatelessWidget {
                       children: [
                         AvatarRing(initial: initial, size: 22),
                         const SizedBox(width: 7),
-                        Text('@$handle',
-                            style: XdrType.thai(size: 11, color: XdrColors.textBody)),
+                        Text('@$handle', style: XdrType.thai(size: 11, color: XdrColors.textBody)),
                         const Spacer(),
-                        Text('♥ ${item.favoritesCount}',
-                            style: XdrType.latin(size: 11, color: XdrColors.danger)),
+                        Text(
+                          '♥ ${item.favoritesCount}',
+                          style: XdrType.latin(size: 11, color: XdrColors.danger),
+                        ),
                       ],
                     ),
                   ],

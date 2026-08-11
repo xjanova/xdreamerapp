@@ -45,16 +45,15 @@ class GalleryState {
     bool? loading,
     bool? loadingMore,
     String? Function()? error,
-  }) =>
-      GalleryState(
-        items: items ?? this.items,
-        page: page ?? this.page,
-        pages: pages ?? this.pages,
-        total: total ?? this.total,
-        loading: loading ?? this.loading,
-        loadingMore: loadingMore ?? this.loadingMore,
-        error: error == null ? this.error : error(),
-      );
+  }) => GalleryState(
+    items: items ?? this.items,
+    page: page ?? this.page,
+    pages: pages ?? this.pages,
+    total: total ?? this.total,
+    loading: loading ?? this.loading,
+    loadingMore: loadingMore ?? this.loadingMore,
+    error: error == null ? this.error : error(),
+  );
 }
 
 class GalleryController extends FamilyNotifier<GalleryState, GalleryScope> {
@@ -67,11 +66,9 @@ class GalleryController extends FamilyNotifier<GalleryState, GalleryScope> {
   Future<void> refresh() async {
     state = state.copyWith(loading: true, error: () => null);
     try {
-      final page = await ref.read(galleryRepositoryProvider).page(
-            page: 1,
-            filter: arg.filter,
-            sort: arg.sort,
-          );
+      final page = await ref
+          .read(galleryRepositoryProvider)
+          .page(page: 1, filter: arg.filter, sort: arg.sort);
       state = GalleryState(
         items: page.items,
         page: page.page,
@@ -88,11 +85,9 @@ class GalleryController extends FamilyNotifier<GalleryState, GalleryScope> {
 
     state = state.copyWith(loadingMore: true, error: () => null);
     try {
-      final next = await ref.read(galleryRepositoryProvider).page(
-            page: state.page + 1,
-            filter: arg.filter,
-            sort: arg.sort,
-          );
+      final next = await ref
+          .read(galleryRepositoryProvider)
+          .page(page: state.page + 1, filter: arg.filter, sort: arg.sort);
       state = state.copyWith(
         items: [...state.items, ...next.items],
         page: next.page,
@@ -109,10 +104,12 @@ class GalleryController extends FamilyNotifier<GalleryState, GalleryScope> {
   /// no. A favourite is not worth a spinner.
   Future<void> toggleFavourite(Generation item) async {
     final wasFavourited = item.isFavorited;
-    _replace(item.copyWith(
-      isFavorited: !wasFavourited,
-      favoritesCount: (item.favoritesCount + (wasFavourited ? -1 : 1)).clamp(0, 1 << 31),
-    ));
+    _replace(
+      item.copyWith(
+        isFavorited: !wasFavourited,
+        favoritesCount: (item.favoritesCount + (wasFavourited ? -1 : 1)).clamp(0, 1 << 31),
+      ),
+    );
 
     try {
       final repository = ref.read(galleryRepositoryProvider);
@@ -137,6 +134,4 @@ class GalleryController extends FamilyNotifier<GalleryState, GalleryScope> {
 }
 
 final galleryControllerProvider =
-    NotifierProvider.family<GalleryController, GalleryState, GalleryScope>(
-  GalleryController.new,
-);
+    NotifierProvider.family<GalleryController, GalleryState, GalleryScope>(GalleryController.new);

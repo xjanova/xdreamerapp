@@ -7,10 +7,9 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 /// somebody a 30-day session. Nothing here is ever logged.
 class TokenStore {
   TokenStore({FlutterSecureStorage? storage})
-      : _storage = storage ??
-            const FlutterSecureStorage(
-              aOptions: AndroidOptions(encryptedSharedPreferences: true),
-            );
+    : _storage =
+          storage ??
+          const FlutterSecureStorage(aOptions: AndroidOptions(encryptedSharedPreferences: true));
 
   final FlutterSecureStorage _storage;
 
@@ -28,9 +27,6 @@ class TokenStore {
   }
 
   Future<void> clear() async {
-    await Future.wait([
-      _storage.delete(key: _accessKey),
-      _storage.delete(key: _refreshKey),
-    ]);
+    await Future.wait([_storage.delete(key: _accessKey), _storage.delete(key: _refreshKey)]);
   }
 }

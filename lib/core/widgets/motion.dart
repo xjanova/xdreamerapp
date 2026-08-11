@@ -10,8 +10,7 @@ import '../theme/xdr_motion.dart';
 /// Everything decorative — sheen, pulse, float, the fiber-threads canvas — must
 /// go still when this is set. Functional motion (a screen entering, a sheet
 /// opening) still runs, just without the flourish.
-bool reducedMotion(BuildContext context) =>
-    MediaQuery.maybeDisableAnimationsOf(context) ?? false;
+bool reducedMotion(BuildContext context) => MediaQuery.maybeDisableAnimationsOf(context) ?? false;
 
 /// `xdrUp` — fade in and rise 14px over 420ms. Every screen entrance, and any
 /// panel that replaces another in place.
@@ -26,10 +25,7 @@ class XdrEnter extends StatefulWidget {
 }
 
 class _XdrEnterState extends State<XdrEnter> with SingleTickerProviderStateMixin {
-  late final AnimationController _c = AnimationController(
-    vsync: this,
-    duration: XdrMotion.enter,
-  );
+  late final AnimationController _c = AnimationController(vsync: this, duration: XdrMotion.enter);
 
   @override
   void initState() {
@@ -79,10 +75,7 @@ class Sheen extends StatefulWidget {
 }
 
 class _SheenState extends State<Sheen> with SingleTickerProviderStateMixin {
-  late final AnimationController _c = AnimationController(
-    vsync: this,
-    duration: XdrMotion.sheen,
-  );
+  late final AnimationController _c = AnimationController(vsync: this, duration: XdrMotion.sheen);
 
   @override
   void didChangeDependencies() {
@@ -157,10 +150,7 @@ class PulseHalo extends StatefulWidget {
 }
 
 class _PulseHaloState extends State<PulseHalo> with SingleTickerProviderStateMixin {
-  late final AnimationController _c = AnimationController(
-    vsync: this,
-    duration: XdrMotion.pulse,
-  );
+  late final AnimationController _c = AnimationController(vsync: this, duration: XdrMotion.pulse);
 
   @override
   void didChangeDependencies() {
@@ -223,10 +213,7 @@ class FloatBob extends StatefulWidget {
 }
 
 class _FloatBobState extends State<FloatBob> with SingleTickerProviderStateMixin {
-  late final AnimationController _c = AnimationController(
-    vsync: this,
-    duration: XdrMotion.float,
-  );
+  late final AnimationController _c = AnimationController(vsync: this, duration: XdrMotion.float);
 
   @override
   void didChangeDependencies() {
@@ -271,10 +258,7 @@ class BlinkingCaret extends StatefulWidget {
 }
 
 class _BlinkingCaretState extends State<BlinkingCaret> with SingleTickerProviderStateMixin {
-  late final AnimationController _c = AnimationController(
-    vsync: this,
-    duration: XdrMotion.blink,
-  );
+  late final AnimationController _c = AnimationController(vsync: this, duration: XdrMotion.blink);
 
   @override
   void didChangeDependencies() {
@@ -299,11 +283,7 @@ class _BlinkingCaretState extends State<BlinkingCaret> with SingleTickerProvider
       animation: _c,
       builder: (context, _) => Opacity(
         opacity: _c.value < 0.5 ? 1 : 0,
-        child: Container(
-          width: widget.width,
-          height: widget.height,
-          color: XdrColors.ice,
-        ),
+        child: Container(width: widget.width, height: widget.height, color: XdrColors.ice),
       ),
     );
   }
@@ -324,10 +304,7 @@ class ShimmerTile extends StatefulWidget {
 }
 
 class _ShimmerTileState extends State<ShimmerTile> with SingleTickerProviderStateMixin {
-  late final AnimationController _c = AnimationController(
-    vsync: this,
-    duration: XdrMotion.shimmer,
-  );
+  late final AnimationController _c = AnimationController(vsync: this, duration: XdrMotion.shimmer);
 
   @override
   void didChangeDependencies() {
@@ -339,7 +316,8 @@ class _ShimmerTileState extends State<ShimmerTile> with SingleTickerProviderStat
       _c.repeat();
       // Stagger by starting each tile part-way through the cycle rather than
       // with a delayed timer — no timer to leak if the panel is torn down.
-      _c.value = (widget.index * XdrMotion.shimmerStagger.inMilliseconds) /
+      _c.value =
+          (widget.index * XdrMotion.shimmerStagger.inMilliseconds) /
           XdrMotion.shimmer.inMilliseconds %
           1.0;
     }
@@ -382,12 +360,7 @@ class _ShimmerTileState extends State<ShimmerTile> with SingleTickerProviderStat
 
 /// `xdrSpin` — the conic brand ring around the progress percentage.
 class SpinRing extends StatefulWidget {
-  const SpinRing({
-    super.key,
-    required this.size,
-    required this.child,
-    this.ringWidth = 5,
-  });
+  const SpinRing({super.key, required this.size, required this.child, this.ringWidth = 5});
 
   final double size;
   final double ringWidth;
@@ -398,10 +371,7 @@ class SpinRing extends StatefulWidget {
 }
 
 class _SpinRingState extends State<SpinRing> with SingleTickerProviderStateMixin {
-  late final AnimationController _c = AnimationController(
-    vsync: this,
-    duration: XdrMotion.spin,
-  );
+  late final AnimationController _c = AnimationController(vsync: this, duration: XdrMotion.spin);
 
   @override
   void didChangeDependencies() {
@@ -452,10 +422,7 @@ class _SpinRingState extends State<SpinRing> with SingleTickerProviderStateMixin
           Container(
             width: widget.size - widget.ringWidth * 2,
             height: widget.size - widget.ringWidth * 2,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: XdrColors.wellFill,
-            ),
+            decoration: const BoxDecoration(shape: BoxShape.circle, color: XdrColors.wellFill),
             alignment: Alignment.center,
             child: widget.child,
           ),

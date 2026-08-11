@@ -34,32 +34,25 @@ class AppShell extends ConsumerWidget {
     return Scaffold(
       body: MandatoryUpdateGate(
         child: XdrBackdrop(
-        child: Stack(
-          children: [
-            Column(
-              children: [
-                const _TopBar(),
-                Expanded(
-                  // Screens read `MediaQuery.paddingOf(context).bottom` for
-                  // their scroll padding, so content clears the tab bar while
-                  // still scrolling underneath its blur.
-                  child: MediaQuery(
-                    data: media.copyWith(
-                      padding: media.padding.copyWith(bottom: barInset),
+          child: Stack(
+            children: [
+              Column(
+                children: [
+                  const _TopBar(),
+                  Expanded(
+                    // Screens read `MediaQuery.paddingOf(context).bottom` for
+                    // their scroll padding, so content clears the tab bar while
+                    // still scrolling underneath its blur.
+                    child: MediaQuery(
+                      data: media.copyWith(padding: media.padding.copyWith(bottom: barInset)),
+                      child: shell,
                     ),
-                    child: shell,
                   ),
-                ),
-              ],
-            ),
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: _TabBar(shell: shell),
-            ),
-          ],
-        ),
+                ],
+              ),
+              Positioned(left: 0, right: 0, bottom: 0, child: _TabBar(shell: shell)),
+            ],
+          ),
         ),
       ),
     );
@@ -93,10 +86,7 @@ class _TopBar extends ConsumerWidget {
               const SizedBox(width: 9),
               Text('X-DREAMER', style: XdrType.wordmark(size: 11).copyWith(shadows: engraved)),
               const Spacer(),
-              CreditPill(
-                credits: credits,
-                onTap: () => context.push(Routes.pricing),
-              ),
+              CreditPill(credits: credits, onTap: () => context.push(Routes.pricing)),
               const SizedBox(width: 10),
               PressSink(
                 radius: 16,
@@ -366,11 +356,17 @@ class _CreateModeSheet extends StatelessWidget {
               const SizedBox(height: 16),
               Text(
                 'สร้างผลงานใหม่',
-                style: XdrType.thai(size: 17, weight: FontWeight.w500, color: XdrColors.textPrimary)
-                    .copyWith(shadows: engraved),
+                style: XdrType.thai(
+                  size: 17,
+                  weight: FontWeight.w500,
+                  color: XdrColors.textPrimary,
+                ).copyWith(shadows: engraved),
               ),
               const SizedBox(height: 3),
-              Text('เลือกโหมดที่ต้องการ', style: XdrType.thai(size: 12, color: XdrColors.textMuted)),
+              Text(
+                'เลือกโหมดที่ต้องการ',
+                style: XdrType.thai(size: 12, color: XdrColors.textMuted),
+              ),
               const SizedBox(height: 14),
               GridView.count(
                 shrinkWrap: true,

@@ -36,8 +36,7 @@ class GeneratingPanel extends StatefulWidget {
   State<GeneratingPanel> createState() => _GeneratingPanelState();
 }
 
-class _GeneratingPanelState extends State<GeneratingPanel>
-    with SingleTickerProviderStateMixin {
+class _GeneratingPanelState extends State<GeneratingPanel> with SingleTickerProviderStateMixin {
   late final Ticker _ticker;
   Duration _elapsed = Duration.zero;
 
@@ -54,8 +53,7 @@ class _GeneratingPanelState extends State<GeneratingPanel>
       if ((next.inMilliseconds ~/ 250) != (_elapsed.inMilliseconds ~/ 250)) {
         setState(() => _elapsed = next);
       }
-    })
-      ..start();
+    })..start();
   }
 
   @override
@@ -137,8 +135,7 @@ class _GeneratingPanelState extends State<GeneratingPanel>
                   mainAxisSpacing: 8,
                   crossAxisSpacing: 8,
                   children: [
-                    for (var i = 0; i < widget.state.batch.clamp(1, 4); i++)
-                      ShimmerTile(index: i),
+                    for (var i = 0; i < widget.state.batch.clamp(1, 4); i++) ShimmerTile(index: i),
                   ],
                 ),
                 const SizedBox(height: 14),

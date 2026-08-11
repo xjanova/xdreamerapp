@@ -50,15 +50,16 @@ class GenerationRepository {
   }
 
   /// `POST /api/upscale` — re-runs an existing result through an upscale model.
-  Future<Generation> upscale({required int generationId, int? modelId, CancelToken? cancelToken}) async {
+  Future<Generation> upscale({
+    required int generationId,
+    int? modelId,
+    CancelToken? cancelToken,
+  }) async {
     final data = await _client.postJson(
       '/api/upscale',
       cancelToken: cancelToken,
       receiveTimeout: const Duration(minutes: 3),
-      body: {
-        'generationId': generationId,
-        if (modelId != null) 'modelId': modelId,
-      },
+      body: {'generationId': generationId, if (modelId != null) 'modelId': modelId},
     );
     return Generation.fromJson(data);
   }

@@ -25,10 +25,12 @@ class DownloadProgress {
 class UpdateRepository {
   UpdateRepository();
 
-  final Dio _dio = Dio(BaseOptions(
-    connectTimeout: const Duration(seconds: 15),
-    receiveTimeout: const Duration(minutes: 10),
-  ));
+  final Dio _dio = Dio(
+    BaseOptions(
+      connectTimeout: const Duration(seconds: 15),
+      receiveTimeout: const Duration(minutes: 10),
+    ),
+  );
 
   /// Ask the backend what the newest release is.
   ///
@@ -71,14 +73,10 @@ class UpdateRepository {
     unawaited(
       _dio
           .download(
-            info.apkUrl.startsWith('http')
-                ? info.apkUrl
-                : '${AppConfig.apiBaseUrl}${info.apkUrl}',
+            info.apkUrl.startsWith('http') ? info.apkUrl : '${AppConfig.apiBaseUrl}${info.apkUrl}',
             file.path,
             cancelToken: cancelToken,
-            options: Options(headers: const {
-              'Accept': 'application/vnd.android.package-archive',
-            }),
+            options: Options(headers: const {'Accept': 'application/vnd.android.package-archive'}),
             onReceiveProgress: (received, total) => progress.add(
               DownloadProgress(
                 received: received,
@@ -116,10 +114,7 @@ class UpdateRepository {
       }
     }
 
-    final result = await OpenFilex.open(
-      file.path,
-      type: 'application/vnd.android.package-archive',
-    );
+    final result = await OpenFilex.open(file.path, type: 'application/vnd.android.package-archive');
     if (result.type != ResultType.done) {
       throw ApiException(
         'เปิดตัวติดตั้งไม่สำเร็จ — ตรวจสอบว่าอนุญาตให้ X-DREAMER ติดตั้งแอปจากแหล่งนี้แล้ว',

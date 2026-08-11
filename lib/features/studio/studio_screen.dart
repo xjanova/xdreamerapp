@@ -43,8 +43,7 @@ class _StudioScreenState extends ConsumerState<StudioScreen> {
       ..addListener(_onPromptChanged);
   }
 
-  void _onPromptChanged() =>
-      ref.read(studioControllerProvider.notifier).setPrompt(_prompt.text);
+  void _onPromptChanged() => ref.read(studioControllerProvider.notifier).setPrompt(_prompt.text);
 
   @override
   void dispose() {
@@ -75,11 +74,7 @@ class _StudioScreenState extends ConsumerState<StudioScreen> {
         child: ListView(
           padding: EdgeInsets.fromLTRB(14, 14, 14, MediaQuery.paddingOf(context).bottom + 20),
           children: [
-            _ModeRail(
-              selected: state.mode,
-              models: models,
-              onSelect: controller.setMode,
-            ),
+            _ModeRail(selected: state.mode, models: models, onSelect: controller.setMode),
             const SizedBox(height: 14),
 
             _PromptCard(
@@ -97,12 +92,12 @@ class _StudioScreenState extends ConsumerState<StudioScreen> {
               onTap: models.isEmpty
                   ? null
                   : () => showModelPicker(
-                        context: context,
-                        models: models,
-                        mode: state.mode,
-                        selectedId: model?.id,
-                        onSelect: controller.setModel,
-                      ),
+                      context: context,
+                      models: models,
+                      mode: state.mode,
+                      selectedId: model?.id,
+                      onSelect: controller.setModel,
+                    ),
             ),
             const SizedBox(height: 14),
 
@@ -119,17 +114,17 @@ class _StudioScreenState extends ConsumerState<StudioScreen> {
 
             switch (state.phase) {
               StudioPhase.generating => GeneratingPanel(
-                  state: state,
-                  model: model,
-                  onDetach: controller.detach,
-                ),
+                state: state,
+                model: model,
+                onDetach: controller.detach,
+              ),
               StudioPhase.result => ResultPanel(state: state, model: model),
               StudioPhase.idle => BrandButton(
-                  label: 'สร้างผลงาน · Generate',
-                  icon: Icons.auto_awesome,
-                  busy: state.submitting,
-                  onPressed: () => controller.generate(model: model, availableCredits: credits),
-                ),
+                label: 'สร้างผลงาน · Generate',
+                icon: Icons.auto_awesome,
+                busy: state.submitting,
+                onPressed: () => controller.generate(model: model, availableCredits: credits),
+              ),
             },
 
             if (state.phase == StudioPhase.result) ...[
@@ -138,8 +133,7 @@ class _StudioScreenState extends ConsumerState<StudioScreen> {
                 label: 'สร้างอีกครั้ง · Generate',
                 icon: Icons.auto_awesome,
                 busy: state.submitting,
-                onPressed: () =>
-                    controller.regenerate(model: model, availableCredits: credits),
+                onPressed: () => controller.regenerate(model: model, availableCredits: credits),
               ),
             ],
           ],
@@ -215,8 +209,9 @@ class _ModeRail extends StatelessWidget {
                         price == null ? mode.labelEn : '${mode.labelEn} · $price ✦',
                         style: XdrType.label(
                           size: 9,
-                          color: (active ? Colors.white : XdrColors.textDim)
-                              .withValues(alpha: 0.65),
+                          color: (active ? Colors.white : XdrColors.textDim).withValues(
+                            alpha: 0.65,
+                          ),
                         ),
                       ),
                     ],
@@ -328,8 +323,11 @@ class _PromptCard extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(Icons.add_photo_alternate_outlined,
-                              size: 14, color: XdrColors.ice),
+                          const Icon(
+                            Icons.add_photo_alternate_outlined,
+                            size: 14,
+                            color: XdrColors.ice,
+                          ),
                           const SizedBox(width: 7),
                           Text(
                             state.mode.needsInputImage ? 'เลือกภาพต้นฉบับ' : 'อ้างอิงภาพ',
@@ -425,8 +423,7 @@ class _ModelRow extends StatelessWidget {
                 ),
                 child: Text(
                   '$cost ✦',
-                  style:
-                      XdrType.latin(size: 11, weight: FontWeight.w600, color: XdrColors.ice),
+                  style: XdrType.latin(size: 11, weight: FontWeight.w600, color: XdrColors.ice),
                 ),
               ),
               const SizedBox(width: 6),
@@ -465,10 +462,8 @@ class _StyleRail extends ConsumerWidget {
                 SizedBox(width: 80, child: ShimmerTile(radius: 999, index: 1)),
               ],
             ),
-            error: (_, __) => Text(
-              'โหลดสไตล์ไม่สำเร็จ',
-              style: XdrType.thai(size: 12, color: XdrColors.textDim),
-            ),
+            error: (_, __) =>
+                Text('โหลดสไตล์ไม่สำเร็จ', style: XdrType.thai(size: 12, color: XdrColors.textDim)),
             data: (list) => ListView.separated(
               scrollDirection: Axis.horizontal,
               itemCount: list.length + 1,

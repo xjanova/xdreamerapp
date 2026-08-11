@@ -86,16 +86,13 @@ class _WorkViewerState extends ConsumerState<WorkViewer> {
                       onTap: () => Navigator.of(context).maybePop(),
                       child: const Padding(
                         padding: EdgeInsets.all(8),
-                        child: Icon(Icons.arrow_back_rounded,
-                            size: 20, color: XdrColors.textBody),
+                        child: Icon(Icons.arrow_back_rounded, size: 20, color: XdrColors.textBody),
                       ),
                     ),
                     const Spacer(),
                     if (item.daysLeft != null)
                       Text(
-                        item.mediaDeleted
-                            ? 'ไฟล์หมดอายุแล้ว'
-                            : 'เหลืออีก ${item.daysLeft} วัน',
+                        item.mediaDeleted ? 'ไฟล์หมดอายุแล้ว' : 'เหลืออีก ${item.daysLeft} วัน',
                         style: XdrType.thai(
                           size: 11,
                           color: item.mediaDeleted ? XdrColors.danger : XdrColors.textDim,
@@ -111,7 +108,8 @@ class _WorkViewerState extends ConsumerState<WorkViewer> {
                       ? EmptyState(
                           icon: Icons.auto_delete_outlined,
                           title: 'ไฟล์นี้ถูกลบตามนโยบายการเก็บข้อมูลแล้ว',
-                          body: 'ระบบเก็บผลงานไว้ตามระยะเวลาที่กำหนด '
+                          body:
+                              'ระบบเก็บผลงานไว้ตามระยะเวลาที่กำหนด '
                               'ครั้งหน้าดาวน์โหลดเก็บไว้ก่อนหมดอายุได้เลย',
                         )
                       : Center(
@@ -158,12 +156,7 @@ class _WorkViewerState extends ConsumerState<WorkViewer> {
                   ),
                 ),
               Padding(
-                padding: EdgeInsets.fromLTRB(
-                  14,
-                  10,
-                  14,
-                  MediaQuery.paddingOf(context).bottom + 14,
-                ),
+                padding: EdgeInsets.fromLTRB(14, 10, 14, MediaQuery.paddingOf(context).bottom + 14),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -185,10 +178,10 @@ class _WorkViewerState extends ConsumerState<WorkViewer> {
                             fontSize: 13,
                             onPressed: (item.mediaDeleted || _current == null)
                                 ? null
-                                : () => _run(() => MediaSaver.saveToGallery(
-                                      _current!,
-                                      isVideo: item.isVideo,
-                                    )),
+                                : () => _run(
+                                    () =>
+                                        MediaSaver.saveToGallery(_current!, isVideo: item.isVideo),
+                                  ),
                           ),
                         ),
                         const SizedBox(width: 10),
@@ -199,13 +192,13 @@ class _WorkViewerState extends ConsumerState<WorkViewer> {
                             onPressed: (item.mediaDeleted || _current == null)
                                 ? null
                                 : () => _run(() async {
-                                      await MediaSaver.share(
-                                        _current!,
-                                        isVideo: item.isVideo,
-                                        caption: item.prompt,
-                                      );
-                                      return null; // the share sheet is its own feedback
-                                    }),
+                                    await MediaSaver.share(
+                                      _current!,
+                                      isVideo: item.isVideo,
+                                      caption: item.prompt,
+                                    );
+                                    return null; // the share sheet is its own feedback
+                                  }),
                           ),
                         ),
                         if (widget.onToggleFavourite != null) ...[

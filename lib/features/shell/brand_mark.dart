@@ -18,7 +18,11 @@ class BrandMark extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(radius),
         boxShadow: [
-          BoxShadow(color: XdrColors.violet.withValues(alpha: 0.5), blurRadius: glow * 2, spreadRadius: -2),
+          BoxShadow(
+            color: XdrColors.violet.withValues(alpha: 0.5),
+            blurRadius: glow * 2,
+            spreadRadius: -2,
+          ),
           const BoxShadow(color: Color(0x17FFFFFF), spreadRadius: 1),
         ],
       ),
@@ -63,21 +67,27 @@ class AvatarRing extends StatelessWidget {
       child: DecoratedBox(
         decoration: const BoxDecoration(shape: BoxShape.circle, color: XdrColors.wellFill),
         child: (imageUrl != null && imageUrl!.isNotEmpty)
-            ? ClipOval(child: Image.network(imageUrl!, fit: BoxFit.cover, errorBuilder: (_, __, ___) => _initial()))
+            ? ClipOval(
+                child: Image.network(
+                  imageUrl!,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) => _initial(),
+                ),
+              )
             : _initial(),
       ),
     );
   }
 
   Widget _initial() => Center(
-        child: Text(
-          initial,
-          style: TextStyle(
-            fontSize: fontSize ?? size * 0.38,
-            fontWeight: FontWeight.w800,
-            color: XdrColors.ice,
-            height: 1,
-          ),
-        ),
-      );
+    child: Text(
+      initial,
+      style: TextStyle(
+        fontSize: fontSize ?? size * 0.38,
+        fontWeight: FontWeight.w800,
+        color: XdrColors.ice,
+        height: 1,
+      ),
+    ),
+  );
 }

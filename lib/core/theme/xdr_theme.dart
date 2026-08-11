@@ -42,11 +42,7 @@ abstract final class XdrTheme {
         titleMedium: XdrType.cardTitle(size: 16),
         labelSmall: XdrType.label(),
       ),
-      dividerTheme: const DividerThemeData(
-        color: XdrColors.hairline,
-        thickness: 1,
-        space: 1,
-      ),
+      dividerTheme: const DividerThemeData(color: XdrColors.hairline, thickness: 1, space: 1),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
         color: XdrColors.ice,
         linearTrackColor: Color(0x0FFFFFFF),

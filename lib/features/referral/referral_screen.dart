@@ -89,8 +89,7 @@ class _ReferralScreenState extends ConsumerState<ReferralScreen> {
                       onTap: () => Navigator.of(context).maybePop(),
                       child: const Padding(
                         padding: EdgeInsets.all(8),
-                        child: Icon(Icons.arrow_back_rounded,
-                            size: 20, color: XdrColors.textBody),
+                        child: Icon(Icons.arrow_back_rounded, size: 20, color: XdrColors.textBody),
                       ),
                     ),
                     const SizedBox(width: 4),
@@ -100,9 +99,8 @@ class _ReferralScreenState extends ConsumerState<ReferralScreen> {
               ),
               Expanded(
                 child: stats.when(
-                  loading: () => const Center(
-                    child: CircularProgressIndicator(color: XdrColors.ice),
-                  ),
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator(color: XdrColors.ice)),
                   error: (error, _) => Padding(
                     padding: const EdgeInsets.all(14),
                     child: ErrorPanel(
@@ -264,9 +262,7 @@ class _Body extends StatelessWidget {
                         fontSize: 12.5,
                         radius: 12,
                         padding: const EdgeInsets.symmetric(vertical: 11),
-                        onPressed: stats.code.isEmpty
-                            ? null
-                            : () => _showQr(context, stats.code),
+                        onPressed: stats.code.isEmpty ? null : () => _showQr(context, stats.code),
                       ),
                     ),
                   ],
@@ -278,9 +274,13 @@ class _Body extends StatelessWidget {
 
           Row(
             children: [
-              Expanded(child: _MiniStat(value: stats.totalReferred, label: 'เพื่อนที่ชวน')),
+              Expanded(
+                child: _MiniStat(value: stats.totalReferred, label: 'เพื่อนที่ชวน'),
+              ),
               const SizedBox(width: 9),
-              Expanded(child: _MiniStat(value: stats.activeFriends, label: 'เติมเครดิตแล้ว')),
+              Expanded(
+                child: _MiniStat(value: stats.activeFriends, label: 'เติมเครดิตแล้ว'),
+              ),
               const SizedBox(width: 9),
               Expanded(
                 child: _MiniStat(
@@ -316,7 +316,8 @@ class _Body extends StatelessWidget {
                 _Step(
                   index: 3,
                   title: 'คุณได้โบนัส + คอมมิชชั่น',
-                  body: 'รับโบนัสทันทีที่เพื่อนใช้โค้ด และอีก ${stats.commissionRate}% '
+                  body:
+                      'รับโบนัสทันทีที่เพื่อนใช้โค้ด และอีก ${stats.commissionRate}% '
                       'ของทุกยอดที่เพื่อนเติม',
                   colours: const [XdrColors.lilac, XdrColors.ice],
                   isLast: true,
@@ -384,7 +385,10 @@ class _Body extends StatelessWidget {
                           Text(
                             '+${groupDigits(friend.totalCommission + friend.bonusCredits)} ✦',
                             style: XdrType.latin(
-                                size: 12, weight: FontWeight.w600, color: XdrColors.mint),
+                              size: 12,
+                              weight: FontWeight.w600,
+                              color: XdrColors.mint,
+                            ),
                           ),
                         ],
                       ),
@@ -504,14 +508,11 @@ class _Step extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(11),
               gradient: LinearGradient(colors: colours),
-              boxShadow: [
-                BoxShadow(color: colours.first.withValues(alpha: 0.45), blurRadius: 22),
-              ],
+              boxShadow: [BoxShadow(color: colours.first.withValues(alpha: 0.45), blurRadius: 22)],
             ),
             child: Text(
               '$index',
-              style: XdrType.latin(
-                  size: 13, weight: FontWeight.w700, color: XdrColors.inkwell),
+              style: XdrType.latin(size: 13, weight: FontWeight.w700, color: XdrColors.inkwell),
             ),
           ),
           const SizedBox(width: 12),

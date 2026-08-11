@@ -11,8 +11,8 @@ import '../models/session.dart';
 /// must not be retried by the bearer interceptor.
 class AuthRepository {
   AuthRepository({required ApiClient client, required TokenStore tokens})
-      : _client = client,
-        _tokens = tokens;
+    : _client = client,
+      _tokens = tokens;
 
   final ApiClient _client;
   final TokenStore _tokens;
