@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:xdreamer/data/repositories/update_repository.dart';
 import 'package:xdreamer/core/net/api_exception.dart';
 import 'package:xdreamer/core/theme/xdr_type.dart';
 import 'package:xdreamer/data/models/catalog.dart';
@@ -197,6 +200,35 @@ void main() {
       expect(XdrType.isThai('QR code'), isFalse);
       expect(XdrType.isThai('มีรหัสจากเพื่อน?'), isTrue);
       expect(XdrType.isThai('เหลืออีก 3 วัน'), isTrue);
+    });
+  });
+
+  group('APK digest check', () {
+    test('matches sha256sum byte for byte, in lowercase hex', () async {
+      // SHA256SUMS.txt is produced by `sha256sum` in the release workflow and
+      // compared against this. A different case or a different encoding would
+      // reject every legitimate update — the app would refuse to install
+      // anything and nobody would find out until a release went out.
+      final file = File('${Directory.systemTemp.path}/xdr-digest-test.bin')
+        ..writeAsStringSync('X-DREAMER');
+      addTearDown(() => file.deleteSync());
+
+      // $ printf 'X-DREAMER' | sha256sum
+      expect(
+        await sha256OfFile(file),
+        '9b1c9e22d6a068b4b35ba17e6403d8ede8e03ea60f1fafb126931551a330c272',
+      );
+    });
+
+    test('an empty file still produces the canonical digest', () async {
+      final file = File('${Directory.systemTemp.path}/xdr-digest-empty.bin')
+        ..writeAsBytesSync(const []);
+      addTearDown(() => file.deleteSync());
+
+      expect(
+        await sha256OfFile(file),
+        'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+      );
     });
   });
 

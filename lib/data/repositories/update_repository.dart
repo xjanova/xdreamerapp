@@ -107,7 +107,7 @@ class UpdateRepository {
     // and refuses a tampered file before the installer is ever opened.
     final expected = info.sha256;
     if (expected != null && expected.isNotEmpty) {
-      final actual = await _digestOf(file);
+      final actual = await sha256OfFile(file);
       if (actual != expected.toLowerCase()) {
         await file.delete();
         throw ApiException('ไฟล์ติดตั้งไม่ตรงกับต้นฉบับ ยกเลิกการติดตั้งเพื่อความปลอดภัย');
@@ -121,17 +121,22 @@ class UpdateRepository {
       );
     }
   }
+}
 
-  /// Streamed so a 40MB file is never held in memory twice.
-  Future<String> _digestOf(File file) async {
-    final output = AccumulatorSink<Digest>();
-    final input = sha256.startChunkedConversion(output);
-    await for (final chunk in file.openRead()) {
-      input.add(chunk);
-    }
-    input.close();
-    final digest = output.events.single;
-    output.close();
-    return digest.toString();
+/// Lowercase hex SHA-256 of a file, streamed so a 40MB APK is never held in
+/// memory twice.
+///
+/// The format has to match `sha256sum` byte for byte — that is what the release
+/// workflow writes into SHA256SUMS.txt and what the install is checked against.
+/// Top-level and public so that rule is testable.
+Future<String> sha256OfFile(File file) async {
+  final output = AccumulatorSink<Digest>();
+  final input = sha256.startChunkedConversion(output);
+  await for (final chunk in file.openRead()) {
+    input.add(chunk);
   }
+  input.close();
+  final digest = output.events.single;
+  output.close();
+  return digest.toString();
 }
