@@ -27,6 +27,35 @@ abstract final class Routes {
   static const referral = '/referral';
 }
 
+/// Where a given auth state should send the customer.
+///
+/// Pure, so the rules can be asserted without a router or a widget tree.
+///
+/// [settled] means "we know whether there is a session" — not "nothing is in
+/// flight". That distinction is the whole point: signing in and failing to sign
+/// in are both *settled* states (we know there is no session yet), and both
+/// must leave the customer on the login form where the spinner and the error
+/// message live. Only the very first restore, before any answer exists, earns
+/// the full-screen boot hold.
+String? redirectFor({
+  required bool settled,
+  required bool signedIn,
+  required bool onboarded,
+  required String path,
+}) {
+  if (!settled) return path == Routes.boot ? null : Routes.boot;
+
+  final atEntry = path == Routes.boot || path == Routes.onboard || path == Routes.login;
+
+  if (!signedIn) {
+    if (!atEntry) return Routes.login;
+    if (path == Routes.boot) return onboarded ? Routes.login : Routes.onboard;
+    return null;
+  }
+
+  return atEntry ? Routes.studio : null;
+}
+
 /// Bridges a Riverpod provider to go_router's `refreshListenable`.
 class _RouterRefresh extends ChangeNotifier {
   _RouterRefresh(Ref ref) {
@@ -43,27 +72,12 @@ final routerProvider = Provider<GoRouter>((ref) {
     refreshListenable: refresh,
     redirect: (context, routerState) {
       final auth = ref.read(authControllerProvider);
-      final path = routerState.matchedLocation;
-
-      // Still restoring, or retrying after a failed restore: hold on the boot
-      // screen rather than bouncing the customer to a login form they may not
-      // need.
-      if (auth.isLoading) return path == Routes.boot ? null : Routes.boot;
-
-      if (auth.hasError) return path == Routes.boot ? null : Routes.boot;
-
-      final signedIn = auth.valueOrNull != null;
-      final atEntry = path == Routes.boot || path == Routes.onboard || path == Routes.login;
-
-      if (!signedIn) {
-        if (!atEntry) return Routes.login;
-        if (path == Routes.boot) {
-          return ref.read(onboardingSeenProvider) ? Routes.login : Routes.onboard;
-        }
-        return null;
-      }
-
-      return atEntry ? Routes.studio : null;
+      return redirectFor(
+        settled: auth.hasValue,
+        signedIn: auth.valueOrNull != null,
+        onboarded: ref.read(onboardingSeenProvider),
+        path: routerState.matchedLocation,
+      );
     },
     routes: [
       GoRoute(path: Routes.boot, builder: (_, __) => const BootScreen()),

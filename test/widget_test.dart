@@ -6,6 +6,7 @@ import 'package:xdreamer/data/models/catalog.dart';
 import 'package:xdreamer/data/models/generation.dart';
 import 'package:xdreamer/data/models/session.dart';
 import 'package:xdreamer/data/models/update_info.dart';
+import 'package:xdreamer/routing/app_router.dart';
 import 'package:xdreamer/state/studio_controller.dart';
 
 void main() {
@@ -196,6 +197,37 @@ void main() {
       expect(XdrType.isThai('QR code'), isFalse);
       expect(XdrType.isThai('มีรหัสจากเพื่อน?'), isTrue);
       expect(XdrType.isThai('เหลืออีก 3 วัน'), isTrue);
+    });
+  });
+
+  group('redirectFor', () {
+    String? at(String path, {bool settled = true, bool signedIn = false, bool onboarded = true}) =>
+        redirectFor(settled: settled, signedIn: signedIn, onboarded: onboarded, path: path);
+
+    test('holds on boot only until the first restore answers', () {
+      expect(at(Routes.studio, settled: false), Routes.boot);
+      expect(at(Routes.boot, settled: false), isNull);
+    });
+
+    test('a sign-in attempt does not throw the customer off the login form', () {
+      // Signing in, and failing to sign in, are both settled-and-signed-out.
+      // Redirecting here would replace the form (with its spinner and its error
+      // message) with a full-screen boot spinner.
+      expect(at(Routes.login), isNull);
+    });
+
+    test('sends a signed-out customer to login, and a first-timer to onboarding', () {
+      expect(at(Routes.works), Routes.login);
+      expect(at(Routes.boot, onboarded: true), Routes.login);
+      expect(at(Routes.boot, onboarded: false), Routes.onboard);
+    });
+
+    test('does not show onboarding or login to somebody already signed in', () {
+      expect(at(Routes.login, signedIn: true), Routes.studio);
+      expect(at(Routes.onboard, signedIn: true), Routes.studio);
+      expect(at(Routes.boot, signedIn: true), Routes.studio);
+      expect(at(Routes.works, signedIn: true), isNull);
+      expect(at(Routes.pricing, signedIn: true), isNull);
     });
   });
 

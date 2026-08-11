@@ -27,15 +27,23 @@ class AuthController extends AsyncNotifier<MobileSession?> {
     return ref.watch(authRepositoryProvider).restore();
   }
 
+  /// Sign in, without ever losing the fact that we already know the answer.
+  ///
+  /// Both the loading and the error state carry the previous value forward, so
+  /// `hasValue` stays true throughout. The router keys the boot screen off
+  /// `hasValue` — without `copyWithPrevious` here, tapping the login button
+  /// would bounce the customer to a full-screen spinner, and a wrong password
+  /// would bounce them there permanently instead of showing the error under the
+  /// form.
   Future<void> signIn({required String email, required String password}) async {
-    state = const AsyncValue.loading();
+    state = const AsyncValue<MobileSession?>.loading().copyWithPrevious(state);
     try {
       final session = await ref
           .read(authRepositoryProvider)
           .login(email: email, password: password);
       state = AsyncValue.data(session);
     } on ApiException catch (error, stack) {
-      state = AsyncValue.error(error, stack);
+      state = AsyncValue<MobileSession?>.error(error, stack).copyWithPrevious(state);
     }
   }
 
