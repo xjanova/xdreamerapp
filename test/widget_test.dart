@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:xdreamer/core/net/api_exception.dart';
+import 'package:xdreamer/core/theme/xdr_type.dart';
 import 'package:xdreamer/data/models/catalog.dart';
 import 'package:xdreamer/data/models/generation.dart';
 import 'package:xdreamer/data/models/session.dart';
@@ -8,6 +9,11 @@ import 'package:xdreamer/data/models/update_info.dart';
 import 'package:xdreamer/state/studio_controller.dart';
 
 void main() {
+  // Anything that resolves a TextStyle goes through google_fonts, which needs
+  // the binding. The assertions below stay on pure logic so no test ever waits
+  // on a font download.
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   group('compareVersions', () {
     test('orders releases', () {
       expect(compareVersions('0.1.0', '0.2.0'), -1);
@@ -171,6 +177,25 @@ void main() {
         ),
       );
       expect(error.kind, ApiErrorKind.network);
+    });
+  });
+
+  group('section labels', () {
+    test('never tracks a Thai heading', () {
+      // 0.14em tracking renders อีเมล as "อี เ ม ล". Latin keeps it.
+      expect(XdrType.trackingFor('อีเมล', 11), isNull);
+      expect(XdrType.trackingFor('PROMPT', 10.5), closeTo(1.47, 0.001));
+    });
+
+    test('only uppercases a script that has cases', () {
+      expect(XdrType.casedLabel('style preset'), 'STYLE PRESET');
+      expect(XdrType.casedLabel('วิธีการทำงาน'), 'วิธีการทำงาน');
+    });
+
+    test('detects Thai anywhere in the string, not just at the start', () {
+      expect(XdrType.isThai('QR code'), isFalse);
+      expect(XdrType.isThai('มีรหัสจากเพื่อน?'), isTrue);
+      expect(XdrType.isThai('เหลืออีก 3 วัน'), isTrue);
     });
   });
 

@@ -417,7 +417,7 @@ class _PerGenerationTable extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('ราคาต่อการสร้าง', style: XdrType.label(size: 10.5)),
+          Text('ราคาต่อการสร้าง', style: XdrType.sectionLabel('ราคาต่อการสร้าง')),
           const SizedBox(height: 10),
           for (final model in rows)
             Padding(

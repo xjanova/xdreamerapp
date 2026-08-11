@@ -84,6 +84,8 @@ abstract final class XdrType {
       thai(size: size, color: color ?? XdrColors.textBody, height: height);
 
   /// Tracked-out uppercase label — `PROMPT`, `STYLE PRESET`, `YOUR CODE`.
+  ///
+  /// Latin only. Use [sectionLabel] for any heading that might be Thai.
   static TextStyle label({double size = 10.5, Color? color, FontWeight weight = FontWeight.w400}) =>
       latin(
         size: size,
@@ -91,6 +93,35 @@ abstract final class XdrType {
         color: color ?? XdrColors.textMuted,
         letterSpacing: size * 0.14,
       );
+
+  static final _thaiScript = RegExp('[฀-๿]');
+
+  static bool isThai(String text) => _thaiScript.hasMatch(text);
+
+  /// The tracking a heading of this script should get: the machined 0.14em for
+  /// Latin, none at all for Thai. Split out from [sectionLabel] so the rule can
+  /// be asserted without resolving a font.
+  static double? trackingFor(String text, double size) => isThai(text) ? null : size * 0.14;
+
+  /// A section heading that adapts to its script.
+  ///
+  /// The 0.14em tracking that makes `STYLE PRESET` look machined does the
+  /// opposite to Thai: it pulls the glyph clusters apart, so `อีเมล` renders as
+  /// `อี เ ม ล`. Thai has no uppercase either. A Thai heading therefore gets a
+  /// plain caption a shade larger — same rung in the hierarchy, none of the
+  /// damage.
+  static TextStyle sectionLabel(
+    String text, {
+    double size = 10.5,
+    Color? color,
+    FontWeight weight = FontWeight.w400,
+  }) => isThai(text)
+      ? thai(size: size + 1.5, weight: FontWeight.w500, color: color ?? XdrColors.textMuted)
+      : label(size: size, color: color, weight: weight);
+
+  /// Uppercasing is a no-op on Thai; going through here documents that a label
+  /// is only cased when its script has cases.
+  static String casedLabel(String text) => isThai(text) ? text : text.toUpperCase();
 
   /// `X-DREAMER`, always uppercase and heavily tracked.
   static TextStyle wordmark({double size = 11, Color? color}) => latin(

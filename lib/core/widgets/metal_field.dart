@@ -85,7 +85,10 @@ class _MetalFieldState extends State<MetalField> {
         if (widget.label != null) ...[
           Row(
             children: [
-              Text(widget.label!.toUpperCase(), style: XdrType.label(size: 11)),
+              Text(
+                XdrType.casedLabel(widget.label!),
+                style: XdrType.sectionLabel(widget.label!, size: 11),
+              ),
               const Spacer(),
               if (widget.trailing != null) widget.trailing!,
             ],

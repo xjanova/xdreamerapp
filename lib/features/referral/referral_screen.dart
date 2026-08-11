@@ -299,7 +299,7 @@ class _Body extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('วิธีการทำงาน', style: XdrType.label(size: 10.5)),
+                Text('วิธีการทำงาน', style: XdrType.sectionLabel('วิธีการทำงาน')),
                 const SizedBox(height: 12),
                 const _Step(
                   index: 1,
@@ -333,7 +333,7 @@ class _Body extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('มีรหัสจากเพื่อน?', style: XdrType.label(size: 10.5)),
+                Text('มีรหัสจากเพื่อน?', style: XdrType.sectionLabel('มีรหัสจากเพื่อน?')),
                 const SizedBox(height: 4),
                 Text(
                   'ใช้ได้เฉพาะบัญชีใหม่ภายใน 30 วัน และยังไม่เคยซื้อเครดิต',
@@ -367,7 +367,7 @@ class _Body extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('เพื่อนที่ชวนมา', style: XdrType.label(size: 10.5)),
+                  Text('เพื่อนที่ชวนมา', style: XdrType.sectionLabel('เพื่อนที่ชวนมา')),
                   const SizedBox(height: 8),
                   for (final friend in stats.friends)
                     Padding(
