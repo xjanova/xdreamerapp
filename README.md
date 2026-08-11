@@ -68,7 +68,22 @@ The app is sideloaded, not published to Play Store, so it updates itself:
 4. Set `ai_settings.mobile_min_supported_version` on the backend to make an
    update mandatory without cutting a new release.
 
-Releasing is a tag push:
+### Building a release locally
+
+```bash
+flutter build apk --release --target-platform android-arm64,android-arm
+```
+
+The `--target-platform` flag is not optional. `ndk.abiFilters` in
+`build.gradle.kts` does **not** trim the Flutter engine — the Flutter Gradle
+plugin packages it and ignores the filter, so a plain
+`flutter build apk --release` ships 19MB of `lib/x86_64` that only an emulator
+would ever load. 58MB versus 39MB, on an app that pulls its own updates over
+mobile data.
+
+### Releasing
+
+A tag push:
 
 ```bash
 git tag v0.2.0 && git push origin v0.2.0

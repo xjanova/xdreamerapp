@@ -92,12 +92,19 @@ jobs:
           keyPassword=${ANDROID_KEY_PASSWORD}
           EOF
 
-      # One universal APK. X-DREAMER carries no heavy native libraries, so
-      # split-per-ABI would save a few megabytes at the cost of the updater
-      # having to work out which one a phone needs.
+      # One APK for both ARM ABIs, so the updater never has to work out which
+      # slice a phone needs.
+      #
+      # `--target-platform` and not `ndk.abiFilters`: the Flutter Gradle plugin
+      # packages the engine itself and ignores the filter — with the filter set
+      # to the two ARM ABIs the APK still contained 19MB of lib/x86_64, which is
+      # only ever used by emulators running debug builds. Dropping it takes the
+      # release from 58MB to ~39MB, which matters for an app that pulls its own
+      # updates over mobile data.
       - name: Build APK
         run: |
           flutter build apk --release \
+            --target-platform android-arm64,android-arm \
             --build-name=${{ steps.ver.outputs.version }} \
             --build-number=${{ steps.ver.outputs.build }} \
             --obfuscate --split-debug-info=build/symbols

@@ -53,6 +53,11 @@ android {
 
     buildTypes {
         release {
+            // NOTE: `ndk.abiFilters` does NOT trim the Flutter engine. It is
+            // packaged by the Flutter Gradle plugin, which ignores the filter —
+            // verified: a build with arm64-v8a/armeabi-v7a filters still shipped
+            // 19MB of lib/x86_64. Use `--target-platform` on the CLI instead;
+            // the release workflow passes it. See README.
             signingConfig = if (keystoreProperties.containsKey("storeFile")) {
                 signingConfigs.getByName("release")
             } else {
