@@ -1,4 +1,6 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:xdreamer/core/net/api_exception.dart';
 import 'package:xdreamer/data/models/catalog.dart';
 import 'package:xdreamer/data/models/generation.dart';
 import 'package:xdreamer/data/models/session.dart';
@@ -118,6 +120,57 @@ void main() {
       final (width, height) = StudioAspect.wide.sizeFor(tiny);
       expect(width, greaterThanOrEqualTo(256));
       expect(height, greaterThanOrEqualTo(256));
+    });
+  });
+
+  group('ApiException', () {
+    DioException http(int status, [Object? body]) => DioException(
+      requestOptions: RequestOptions(path: '/x'),
+      type: DioExceptionType.badResponse,
+      response: Response<Object?>(
+        requestOptions: RequestOptions(path: '/x'),
+        statusCode: status,
+        data: body,
+      ),
+    );
+
+    test('separates a dead session from a backend that is merely down', () {
+      // The client signs out on the first and retries on the second, so these
+      // must never collapse into one kind.
+      expect(ApiException.from(http(401)).kind, ApiErrorKind.unauthorized);
+      expect(ApiException.from(http(503)).kind, ApiErrorKind.serviceUnavailable);
+      expect(ApiException.from(http(500)).kind, ApiErrorKind.server);
+    });
+
+    test('never shows a 500 body to the customer', () {
+      final error = ApiException.from(
+        http(500, {'error': 'Prisma error at ai_generations.user_id'}),
+      );
+      expect(error.message, isNot(contains('Prisma')));
+      expect(error.message, isNot(contains('ai_generations')));
+    });
+
+    test('rewrites the API English that leaks through some routes', () {
+      expect(
+        ApiException.from(http(401, {'error': 'Unauthorized'})).message,
+        'กรุณาเข้าสู่ระบบใหม่',
+      );
+      expect(ApiException.from(http(402)).kind, ApiErrorKind.insufficientCredits);
+    });
+
+    test('passes through the Thai copy the API already wrote', () {
+      final error = ApiException.from(http(400, {'error': 'กรุณาระบุรหัสชวนเพื่อน'}));
+      expect(error.message, 'กรุณาระบุรหัสชวนเพื่อน');
+    });
+
+    test('a dropped connection reads as a network problem, not a server fault', () {
+      final error = ApiException.from(
+        DioException(
+          requestOptions: RequestOptions(path: '/x'),
+          type: DioExceptionType.connectionError,
+        ),
+      );
+      expect(error.kind, ApiErrorKind.network);
     });
   });
 

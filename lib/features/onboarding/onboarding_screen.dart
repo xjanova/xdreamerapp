@@ -93,13 +93,20 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
         children: [
           // The artwork crossfades under the copy rather than sliding with it —
           // the panel stays put and only the world behind it changes.
+          //
+          // `SizedBox.expand` is load-bearing: AnimatedSwitcher lays its child
+          // out in a loose Stack, so a bare Image takes its intrinsic size and
+          // sits centred instead of covering the screen. BoxFit.cover cannot
+          // cover a box nobody told it to fill.
           AnimatedSwitcher(
             duration: const Duration(milliseconds: 420),
-            child: Image.asset(
-              _slides[_index].art,
+            child: SizedBox.expand(
               key: ValueKey(_index),
-              fit: BoxFit.cover,
-              opacity: const AlwaysStoppedAnimation(0.55),
+              child: Image.asset(
+                _slides[_index].art,
+                fit: BoxFit.cover,
+                opacity: const AlwaysStoppedAnimation(0.55),
+              ),
             ),
           ),
           const Positioned.fill(
