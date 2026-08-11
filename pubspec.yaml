@@ -1,0 +1,76 @@
+name: xdreamer
+description: "X-DREAMER — ทอความฝันจากเส้นใยแห่งความคิด"
+publish_to: 'none'
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.11.0
+  flutter: ">=3.41.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+
+  # State management
+  flutter_riverpod: ^2.6.1
+
+  # Routing
+  go_router: ^14.6.2
+
+  # HTTP + API
+  dio: ^5.7.0
+
+  # Storage — tokens go in the keystore-backed store, never SharedPreferences
+  flutter_secure_storage: ^9.2.2
+  shared_preferences: ^2.3.3
+
+  # UI
+  google_fonts: ^6.2.1
+  cached_network_image: ^3.4.1
+
+  # Screen actions that would otherwise be dead buttons
+  image_picker: ^1.1.2      # reference image for edit / image→video
+  video_player: ^2.9.2      # video results
+  gal: ^2.3.0               # save a result to the device gallery
+  share_plus: ^10.1.2       # share a result / referral link
+  qr_flutter: ^4.1.0        # referral QR
+  url_launcher: ^6.3.1      # xmanstudio checkout + registration
+
+  package_info_plus: ^8.1.1
+  path_provider: ^2.1.5
+
+  # Self-update: fetch the APK, verify its digest, hand it to the installer
+  crypto: ^3.0.6
+  convert: ^3.1.2      # AccumulatorSink, for hashing the APK without loading it
+  open_filex: ^4.5.0
+
+# Models are hand-written fromJson (see lib/data/models/) — no build_runner.
+# Same call as thaipromptapp: codegen buys little for a dozen DTOs and costs a
+# toolchain that has to be kept in sync with every other package.
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  flutter_launcher_icons: ^0.14.2
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/brand/
+    - assets/showcase/
+
+# Regenerate with: dart run flutter_launcher_icons
+# Source is the 4K master from the aixman repo (public/xdreamer-logo.png), kept
+# out of assets/ so it is not bundled into the APK — only the generated mipmaps
+# ship.
+flutter_launcher_icons:
+  android: true
+  image_path: "tool/icon/xdreamer-logo.png"
+  adaptive_icon_background: "#05080F"
+  adaptive_icon_foreground: "tool/icon/xdreamer-logo.png"
+  min_sdk_android: 24

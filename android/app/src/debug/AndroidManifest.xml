@@ -1,0 +1,11 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <!-- Debug builds only: lets the app talk to a `next dev` server over plain
+         HTTP on the LAN. The release manifest has no such allowance, so a
+         production APK cannot be pointed at a cleartext host. -->
+    <application
+        android:usesCleartextTraffic="true"
+        tools:replace="android:usesCleartextTraffic" />
+</manifest>

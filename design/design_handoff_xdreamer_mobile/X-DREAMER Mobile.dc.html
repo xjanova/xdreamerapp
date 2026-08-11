@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&family=Noto+Sans+Thai:wght@200;300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+  ::-webkit-scrollbar{width:0;height:0}
+  body{margin:0;background:#05070f;color:#f1f5f9;font-family:'Noto Sans Thai','Inter',system-ui,sans-serif}
+  a{color:#a5f3fc;text-decoration:none}
+  a:hover{color:#c4b5fd}
+  @keyframes xdrSpin{to{transform:rotate(360deg)}}
+  @keyframes xdrBlink{0%,50%{opacity:1}50.01%,100%{opacity:0}}
+  @keyframes xdrFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  @keyframes xdrPulse{0%,100%{opacity:.45;transform:scale(1)}50%{opacity:.9;transform:scale(1.12)}}
+  @keyframes xdrShim{0%{background-position:130% 0}100%{background-position:-130% 0}}
+  @keyframes xdrSheen{0%{left:-45%}55%,100%{left:135%}}
+  @keyframes xdrUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes xdrSheet{from{transform:translateY(100%)}to{transform:translateY(0)}}
+</style>
+</helmet>
+
+<div style="min-height:100%;padding:44px 48px 72px;background:radial-gradient(ellipse at 20% 0%,rgba(139,92,246,0.14),transparent 55%),radial-gradient(ellipse at 85% 10%,rgba(6,182,212,0.12),transparent 50%),#05070f">
+  <div style="display:flex;align-items:flex-start;gap:20px;max-width:1180px;margin-bottom:14px">
+    <img src="public/logo.webp" alt="X-DREAMER" style="width:76px;height:76px;border-radius:22px;object-fit:cover;box-shadow:0 0 42px rgba(139,92,246,0.5)"/>
+    <div style="flex:1">
+      <div style="font-family:'Inter',sans-serif;font-weight:900;letter-spacing:0.26em;font-size:13px;color:#fff">X-DREAMER · MOBILE</div>
+      <div style="font-size:38px;font-weight:300;letter-spacing:-0.02em;color:#fff;margin-top:8px;line-height:1.15">แอปมือถือสำหรับสร้างผลงาน<br/><span style="font-weight:200;font-style:italic;background:linear-gradient(100deg,#a5f3fc,#c4b5fd);-webkit-background-clip:text;background-clip:text;color:transparent">ทอความฝันจากเส้นใยแห่งความคิด</span></div>
+      <div style="font-family:'Inter',sans-serif;font-size:13.5px;line-height:1.7;color:rgba(226,232,240,0.6);margin-top:12px;max-width:720px;text-wrap:pretty">Android · 412×892 · Material 3 bezel. ธีม โลโก้ สี ฟอนต์ และภาพ ดึงมาจาก repo <a href="https://github.com/xjanova/aixman">xjanova/aixman</a> โดยตรง — fiber-threads canvas (hue 70°), gradient emerald → cyan → violet, Inter + Noto Sans Thai — ยกระดับพื้นผิวเป็นแบบชิ้นโลหะกลึง: แผ่นเมทัลลิกมีขอบลบมุม (bevel) ปุ่มนูนกดยุบได้จริง ช่องควบคุมเซาะร่องลึก ตัวอักษรสลักแบบ engraved. ทุกเครื่องกดใช้งานได้จริง: เปลี่ยนแท็บ เลือกโหมด กดสร้าง แล้วดูสถานะ generating → result</div>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:10px;margin:26px 0 34px">
+    <div style="display:flex;align-items:center;gap:9px;padding:9px 14px;border-radius:12px;background:rgba(15,23,42,0.6);border:1px solid rgba(255,255,255,0.08);font-family:'Inter',sans-serif;font-size:11.5px;color:#94a3b8"><span style="width:14px;height:14px;border-radius:4px;background:linear-gradient(158deg,#1a2237,#0d1322 46%,#111a2b);box-shadow:inset 0 1px 0 rgba(255,255,255,0.2),inset 0 -1px 0 rgba(0,0,0,0.7)"></span>#05080f base · plate #1a2237→#111a2b</div>
+    <div style="display:flex;align-items:center;gap:9px;padding:9px 14px;border-radius:12px;background:rgba(15,23,42,0.6);border:1px solid rgba(255,255,255,0.08);font-family:'Inter',sans-serif;font-size:11.5px;color:#94a3b8"><span style="width:14px;height:14px;border-radius:4px;background:#10b981"></span>#10b981</div>
+    <div style="display:flex;align-items:center;gap:9px;padding:9px 14px;border-radius:12px;background:rgba(15,23,42,0.6);border:1px solid rgba(255,255,255,0.08);font-family:'Inter',sans-serif;font-size:11.5px;color:#94a3b8"><span style="width:14px;height:14px;border-radius:4px;background:#06b6d4"></span>#06b6d4</div>
+    <div style="display:flex;align-items:center;gap:9px;padding:9px 14px;border-radius:12px;background:rgba(15,23,42,0.6);border:1px solid rgba(255,255,255,0.08);font-family:'Inter',sans-serif;font-size:11.5px;color:#94a3b8"><span style="width:14px;height:14px;border-radius:4px;background:#8b5cf6"></span>#8b5cf6</div>
+    <div style="display:flex;align-items:center;gap:9px;padding:9px 14px;border-radius:12px;background:rgba(15,23,42,0.6);border:1px solid rgba(255,255,255,0.08);font-family:'Inter',sans-serif;font-size:11.5px;color:#a5f3fc"><span style="width:14px;height:14px;border-radius:4px;background:#a5f3fc"></span>#a5f3fc accent text</div>
+    <div style="padding:9px 14px;border-radius:12px;background:rgba(15,23,42,0.6);border:1px solid rgba(255,255,255,0.08);font-family:'Inter',sans-serif;font-size:11.5px;color:#94a3b8">Tab bar 4 + center FAB</div>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:44px 38px">
+
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:baseline;gap:9px"><span style="font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.1em;padding:3px 7px;border-radius:5px;background:rgba(255,255,255,0.08);color:#a5f3fc">01</span><span style="font-size:14px;color:#e2e8f0">ออนบอร์ด</span><span style="font-family:'Inter',sans-serif;font-size:11px;color:#64748b">Onboarding</span></div>
+      <x-import component-from-global-scope="AndroidDevice" from="./android-frame.jsx" dark="{{ true }}" bg="#030612" hint-size="428px,908px">
+        <dc-import name="XdrApp" route="onboard" hint-size="100%,100%" style="height:100%"></dc-import>
+      </x-import>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:baseline;gap:9px"><span style="font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.1em;padding:3px 7px;border-radius:5px;background:rgba(255,255,255,0.08);color:#a5f3fc">02</span><span style="font-size:14px;color:#e2e8f0">เข้าสู่ระบบ</span><span style="font-family:'Inter',sans-serif;font-size:11px;color:#64748b">Sign in</span></div>
+      <x-import component-from-global-scope="AndroidDevice" from="./android-frame.jsx" dark="{{ true }}" bg="#030612" hint-size="428px,908px">
+        <dc-import name="XdrApp" route="login" hint-size="100%,100%" style="height:100%"></dc-import>
+      </x-import>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:baseline;gap:9px"><span style="font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.1em;padding:3px 7px;border-radius:5px;background:linear-gradient(135deg,#a5f3fc,#c4b5fd);color:#030612">03</span><span style="font-size:14px;color:#e2e8f0">สตูดิโอสร้างงาน</span><span style="font-family:'Inter',sans-serif;font-size:11px;color:#64748b">Studio · กดสร้างได้จริง</span></div>
+      <x-import component-from-global-scope="AndroidDevice" from="./android-frame.jsx" dark="{{ true }}" bg="#030612" hint-size="428px,908px">
+        <dc-import name="XdrApp" route="studio" phase="idle" hint-size="100%,100%" style="height:100%"></dc-import>
+      </x-import>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:baseline;gap:9px"><span style="font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.1em;padding:3px 7px;border-radius:5px;background:rgba(255,255,255,0.08);color:#a5f3fc">04</span><span style="font-size:14px;color:#e2e8f0">กำลังสร้าง</span><span style="font-family:'Inter',sans-serif;font-size:11px;color:#64748b">Generating</span></div>
+      <x-import component-from-global-scope="AndroidDevice" from="./android-frame.jsx" dark="{{ true }}" bg="#030612" hint-size="428px,908px">
+        <dc-import name="XdrApp" route="studio" phase="generating" hint-size="100%,100%" style="height:100%"></dc-import>
+      </x-import>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:baseline;gap:9px"><span style="font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.1em;padding:3px 7px;border-radius:5px;background:rgba(255,255,255,0.08);color:#a5f3fc">05</span><span style="font-size:14px;color:#e2e8f0">ผลลัพธ์</span><span style="font-family:'Inter',sans-serif;font-size:11px;color:#64748b">Result · 4 frames</span></div>
+      <x-import component-from-global-scope="AndroidDevice" from="./android-frame.jsx" dark="{{ true }}" bg="#030612" hint-size="428px,908px">
+        <dc-import name="XdrApp" route="studio" phase="result" hint-size="100%,100%" style="height:100%"></dc-import>
+      </x-import>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:baseline;gap:9px"><span style="font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.1em;padding:3px 7px;border-radius:5px;background:rgba(255,255,255,0.08);color:#a5f3fc">06</span><span style="font-size:14px;color:#e2e8f0">ผลงานของฉัน</span><span style="font-family:'Inter',sans-serif;font-size:11px;color:#64748b">My works</span></div>
+      <x-import component-from-global-scope="AndroidDevice" from="./android-frame.jsx" dark="{{ true }}" bg="#030612" hint-size="428px,908px">
+        <dc-import name="XdrApp" route="works" hint-size="100%,100%" style="height:100%"></dc-import>
+      </x-import>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:baseline;gap:9px"><span style="font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.1em;padding:3px 7px;border-radius:5px;background:rgba(255,255,255,0.08);color:#a5f3fc">07</span><span style="font-size:14px;color:#e2e8f0">ชุมชน</span><span style="font-family:'Inter',sans-serif;font-size:11px;color:#64748b">Community gallery</span></div>
+      <x-import component-from-global-scope="AndroidDevice" from="./android-frame.jsx" dark="{{ true }}" bg="#030612" hint-size="428px,908px">
+        <dc-import name="XdrApp" route="community" hint-size="100%,100%" style="height:100%"></dc-import>
+      </x-import>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:baseline;gap:9px"><span style="font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.1em;padding:3px 7px;border-radius:5px;background:rgba(255,255,255,0.08);color:#a5f3fc">08</span><span style="font-size:14px;color:#e2e8f0">โปรไฟล์ + เครดิต</span><span style="font-family:'Inter',sans-serif;font-size:11px;color:#64748b">Profile</span></div>
+      <x-import component-from-global-scope="AndroidDevice" from="./android-frame.jsx" dark="{{ true }}" bg="#030612" hint-size="428px,908px">
+        <dc-import name="XdrApp" route="profile" hint-size="100%,100%" style="height:100%"></dc-import>
+      </x-import>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:baseline;gap:9px"><span style="font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.1em;padding:3px 7px;border-radius:5px;background:rgba(255,255,255,0.08);color:#a5f3fc">09</span><span style="font-size:14px;color:#e2e8f0">แพ็กเกจเครดิต</span><span style="font-family:'Inter',sans-serif;font-size:11px;color:#64748b">Pricing · THB/USD</span></div>
+      <x-import component-from-global-scope="AndroidDevice" from="./android-frame.jsx" dark="{{ true }}" bg="#030612" hint-size="428px,908px">
+        <dc-import name="XdrApp" route="pricing" hint-size="100%,100%" style="height:100%"></dc-import>
+      </x-import>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:baseline;gap:9px"><span style="font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.1em;padding:3px 7px;border-radius:5px;background:rgba(255,255,255,0.08);color:#a5f3fc">10</span><span style="font-size:14px;color:#e2e8f0">ชวนเพื่อน</span><span style="font-family:'Inter',sans-serif;font-size:11px;color:#64748b">Referral</span></div>
+      <x-import component-from-global-scope="AndroidDevice" from="./android-frame.jsx" dark="{{ true }}" bg="#030612" hint-size="428px,908px">
+        <dc-import name="XdrApp" route="referral" hint-size="100%,100%" style="height:100%"></dc-import>
+      </x-import>
+    </div>
+
+  </div>
+
+  <div style="margin-top:52px;padding-top:22px;border-top:1px solid rgba(255,255,255,0.07);font-family:'Inter',sans-serif;font-size:12.5px;line-height:1.8;color:rgba(148,163,184,0.75);max-width:820px;text-wrap:pretty">
+    ต่อยอดได้: เพิ่มหน้ารายละเอียดผลงาน (detail sheet + prompt remix), img2img ที่มี strength slider, หน้าแก้ไขภาพแบบ brush mask, สถานะคิว/แจ้งเตือนเมื่อวิดีโอเสร็จ หรือ dark/light theme switch ตาม hue parameter ของธีม
+  </div>
+</div>
+
+</x-dc>
+</body>
+</html>

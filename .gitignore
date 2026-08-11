@@ -1,0 +1,58 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# IntelliJ / Android Studio
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# VS Code
+.vscode/
+
+# Flutter/Dart/Pub
+**/doc/api/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+build/
+
+# Android
+**/android/**/gradle-wrapper.jar
+**/android/.gradle
+**/android/captures/
+**/android/gradlew
+**/android/gradlew.bat
+**/android/local.properties
+**/android/**/GeneratedPluginRegistrant.java
+
+# Signing — the release keystore and its passwords are written by CI from repo
+# secrets and must never be committed. Losing or rotating this key breaks
+# in-app self-update for every phone that already has the app installed.
+android/key.properties
+**/*.jks
+**/*.keystore
+
+# Symbols from --split-debug-info; published as a CI artifact instead.
+symbols/
+
+# Design handoff: the spec and the HTML prototypes are tracked, the payload is
+# not. The zip is just these files again, and design/**/assets/ is the same art
+# already in assets/showcase/.
+design/*.zip
+design/**/assets/
+
+# 4.3MB icon master. Lives in the aixman repo (public/xdreamer-logo.png) — see
+# tool/icon/README.md. Only the generated mipmaps are tracked.
+tool/icon/*.png
