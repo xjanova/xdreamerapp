@@ -54,6 +54,7 @@ class StudioState {
     this.styleId,
     this.aspect = StudioAspect.square,
     this.batch = 4,
+    this.duration = 5,
     this.modelId,
     this.phase = StudioPhase.idle,
     this.job,
@@ -70,6 +71,14 @@ class StudioState {
   final int? styleId;
   final StudioAspect aspect;
   final int batch;
+
+  /// Clip length in seconds, for the video modes.
+  ///
+  /// Five is the length every provider treats as standard. It used to send the
+  /// model's `maxDuration`, which meant every clip came out as long as the
+  /// model could manage whether or not anyone wanted that — slowest possible
+  /// render, every time, with no way to ask for less.
+  final int duration;
 
   /// null means "whatever the mode's default model is".
   final int? modelId;
@@ -97,6 +106,7 @@ class StudioState {
     int? Function()? styleId,
     StudioAspect? aspect,
     int? batch,
+    int? duration,
     int? Function()? modelId,
     StudioPhase? phase,
     Generation? Function()? job,
@@ -113,6 +123,7 @@ class StudioState {
       styleId: styleId == null ? this.styleId : styleId(),
       aspect: aspect ?? this.aspect,
       batch: batch ?? this.batch,
+      duration: duration ?? this.duration,
       modelId: modelId == null ? this.modelId : modelId(),
       phase: phase ?? this.phase,
       job: job == null ? this.job : job(),
@@ -166,6 +177,11 @@ class StudioController extends Notifier<StudioState> {
   void setAspect(StudioAspect aspect) => state = state.copyWith(aspect: aspect);
 
   void setBatch(int batch) => state = state.copyWith(batch: batch.clamp(1, 4));
+
+  /// Clamped to what the model can render — asking Kling for 20s when it
+  /// tops out at 10 just buys a rejected job that still cost credits.
+  void setDuration(int seconds, {int? maxDuration}) =>
+      state = state.copyWith(duration: seconds.clamp(1, maxDuration ?? 60));
 
   void setModel(int? id) => state = state.copyWith(modelId: () => id, error: () => null);
 
@@ -290,7 +306,8 @@ class StudioController extends Notifier<StudioState> {
               'height': height,
               'aspectRatio': state.aspect.label,
               'numOutputs': state.batch,
-              if (state.mode.producesVideo) 'duration': model.maxDuration ?? 5,
+              if (state.mode.producesVideo)
+                'duration': state.duration.clamp(1, model.maxDuration ?? 60),
               if (state.mode == StudioMode.upscale) 'mode': 'upscale',
             },
           );

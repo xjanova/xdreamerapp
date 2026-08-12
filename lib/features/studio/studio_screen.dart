@@ -104,7 +104,7 @@ class _StudioScreenState extends ConsumerState<StudioScreen> {
             const _StyleRail(),
             const SizedBox(height: 14),
 
-            _AspectAndBatch(state: state, controller: controller),
+            _AspectAndCount(state: state, controller: controller, model: model),
             const SizedBox(height: 16),
 
             if (state.error != null) ...[
@@ -524,17 +524,26 @@ class _StylePill extends StatelessWidget {
 
 // ── Aspect + batch ──────────────────────────────────────────────────────────
 
-class _AspectAndBatch extends StatelessWidget {
-  const _AspectAndBatch({required this.state, required this.controller});
+/// Clip lengths offered, before the model's own ceiling is applied.
+const _videoDurations = [5, 10, 15, 20];
+
+class _AspectAndCount extends StatelessWidget {
+  const _AspectAndCount({required this.state, required this.controller, required this.model});
 
   final StudioState state;
   final StudioController controller;
+  final AiModelInfo? model;
 
   @override
   Widget build(BuildContext context) {
     // A video render produces one clip; offering "×4" would quietly quadruple
-    // the price for something the providers do not batch.
-    final batchAllowed = !state.mode.producesVideo;
+    // the price for something the providers do not batch. The slot is worth
+    // more as the clip length, which is the choice a video actually has.
+    final isVideo = state.mode.producesVideo;
+
+    final maxDuration = model?.maxDuration ?? 10;
+    final durations = _videoDurations.where((d) => d <= maxDuration).toList();
+    final durationChoices = durations.isEmpty ? [_videoDurations.first] : durations;
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -574,25 +583,39 @@ class _AspectAndBatch extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('BATCH', style: XdrType.label(size: 9.5)),
+                Text(isVideo ? 'LENGTH' : 'BATCH', style: XdrType.label(size: 9.5)),
                 const SizedBox(height: 10),
-                Opacity(
-                  opacity: batchAllowed ? 1 : 0.45,
-                  child: Row(
+                if (isVideo)
+                  Row(
+                    children: [
+                      for (final seconds in durationChoices) ...[
+                        Expanded(
+                          child: _CountChoice(
+                            label: '${seconds}s',
+                            active: state.duration == seconds,
+                            onTap: () =>
+                                controller.setDuration(seconds, maxDuration: model?.maxDuration),
+                          ),
+                        ),
+                        if (seconds != durationChoices.last) const SizedBox(width: 5),
+                      ],
+                    ],
+                  )
+                else
+                  Row(
                     children: [
                       for (var n = 1; n <= 4; n++) ...[
                         Expanded(
-                          child: _BatchChoice(
-                            count: n,
+                          child: _CountChoice(
+                            label: '$n',
                             active: state.batch == n,
-                            onTap: batchAllowed ? () => controller.setBatch(n) : null,
+                            onTap: () => controller.setBatch(n),
                           ),
                         ),
                         if (n < 4) const SizedBox(width: 5),
                       ],
                     ],
                   ),
-                ),
               ],
             ),
           ),
@@ -647,10 +670,11 @@ class _AspectChoice extends StatelessWidget {
   }
 }
 
-class _BatchChoice extends StatelessWidget {
-  const _BatchChoice({required this.count, required this.active, required this.onTap});
+/// One cell of the batch-count or clip-length group.
+class _CountChoice extends StatelessWidget {
+  const _CountChoice({required this.label, required this.active, required this.onTap});
 
-  final int count;
+  final String label;
   final bool active;
   final VoidCallback? onTap;
 
@@ -668,7 +692,7 @@ class _BatchChoice extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 12),
         child: Center(
           child: Text(
-            '$count',
+            label,
             style: XdrType.latin(
               size: 13,
               weight: FontWeight.w600,
