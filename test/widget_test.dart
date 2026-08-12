@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:xdreamer/data/repositories/update_repository.dart';
+import 'package:xdreamer/core/config/app_config.dart';
 import 'package:xdreamer/core/net/api_exception.dart';
 import 'package:xdreamer/core/net/xman_sso.dart';
 import 'package:xdreamer/core/theme/xdr_type.dart';
@@ -230,6 +231,27 @@ void main() {
         await sha256OfFile(file),
         'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
       );
+    });
+  });
+
+  group('XMAN ID authorize URL', () {
+    test('asks for exactly the redirect the server allowlists', () {
+      // xmanstudio compares redirect_uri against an exact-match allowlist and
+      // the Android manifest registers the same scheme and host. Change one of
+      // the three and sign-in breaks with a 400 nobody will connect to this.
+      final url = AppConfig.xmanAuthorizeUrl(state: 's', codeChallenge: 'c');
+
+      expect(url.origin, 'https://xman4289.com');
+      expect(url.path, '/auth/xdreamer/authorize');
+      expect(url.queryParameters['redirect_uri'], 'xdreamer://auth/callback');
+      expect(AppConfig.callbackScheme, 'xdreamer');
+      expect(AppConfig.callbackHost, 'auth');
+    });
+
+    test('carries the state and challenge the callback is matched against', () {
+      final url = AppConfig.xmanAuthorizeUrl(state: 'abc', codeChallenge: 'xyz');
+      expect(url.queryParameters['state'], 'abc');
+      expect(url.queryParameters['code_challenge'], 'xyz');
     });
   });
 
