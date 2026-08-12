@@ -41,7 +41,8 @@ cannot hold. `aixman` was extended with bearer-token auth for this app:
 
 | endpoint | purpose |
 |---|---|
-| `POST /api/mobile/auth/login` | email + password → access + refresh token |
+| `POST /api/mobile/auth/xman-exchange` | XMAN ID authorization code + PKCE verifier → tokens |
+| `POST /api/mobile/auth/login` | email + password → access + refresh token (fallback) |
 | `POST /api/mobile/auth/refresh` | rotate the pair |
 | `GET /api/mobile/me` | profile + credit balance in one call |
 | `GET /api/mobile/app-version` | latest release, for self-update |
@@ -133,9 +134,14 @@ Deliberate, and each for a reason:
   signed-in user server-side and there is no public feed endpoint yet, so the
   screen says so rather than implying otherwise. `ai_generations.is_public`
   exists, so when the endpoint lands only `GalleryRepository` changes.
-- **Login's second button is a password reset link**, not "continue with XMAN
-  Studio" — the accounts are the same row in the same table, so there is no
-  handoff to perform.
+- **Login is one button: "เข้าด้วย XMAN ID".** It opens xman4289.com's own
+  authorize page, which sits behind Laravel's `auth` middleware — so an existing
+  session returns immediately, no session gets the login form, and no account
+  gets the register link, all without this app drawing any of it. The code comes
+  back over `xdreamer://auth/callback` bound to a PKCE challenge, and
+  `POST /api/mobile/auth/xman-exchange` trades it for the usual bearer pair.
+  Email and password still work, one tap behind a link, for when xman4289.com is
+  unreachable.
 - **Credit usage is lifetime, not monthly.** The API exposes running totals, not
   a monthly window.
 - **No free-credit number on the signup link.** The welcome grant comes from

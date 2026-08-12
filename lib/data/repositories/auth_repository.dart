@@ -37,6 +37,34 @@ class AuthRepository {
     return result.session;
   }
 
+  /// Redeem an XMAN ID authorization code for this app's own tokens.
+  ///
+  /// Goes through the unauthenticated client for the same reason login does:
+  /// there is nothing to attach yet, and a 401 here means "start the browser
+  /// flow again", not "refresh the token you do not have".
+  Future<MobileSession> exchangeXmanCode({
+    required String code,
+    required String codeVerifier,
+  }) async {
+    late final Response<Map<String, dynamic>> response;
+    try {
+      response = await _client.unauthenticated.post<Map<String, dynamic>>(
+        '/api/mobile/auth/xman-exchange',
+        data: {'code': code, 'codeVerifier': codeVerifier},
+      );
+    } catch (error) {
+      throw ApiException.from(error);
+    }
+
+    final result = AuthResult.fromJson(response.data ?? const {});
+    if (!result.isUsable) {
+      throw ApiException('เข้าสู่ระบบด้วย XMAN ID ไม่สำเร็จ กรุณาลองใหม่');
+    }
+
+    await _tokens.save(access: result.accessToken, refresh: result.refreshToken);
+    return result.session;
+  }
+
   /// Cold start: is there still a usable session on this device?
   ///
   /// Returns null rather than throwing when there is simply nobody signed in —

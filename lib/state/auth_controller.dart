@@ -47,6 +47,24 @@ class AuthController extends AsyncNotifier<MobileSession?> {
     }
   }
 
+  /// The one-button path: hand off to xman4289.com and come back with tokens.
+  ///
+  /// Carries the previous value forward for the same reason [signIn] does —
+  /// the router must not mistake "signing in" for "we do not know yet" and
+  /// replace the login screen with the boot spinner.
+  Future<void> signInWithXman() async {
+    state = const AsyncValue<MobileSession?>.loading().copyWithPrevious(state);
+    try {
+      final result = await ref.read(xmanSsoProvider).signIn();
+      final session = await ref
+          .read(authRepositoryProvider)
+          .exchangeXmanCode(code: result.code, codeVerifier: result.codeVerifier);
+      state = AsyncValue.data(session);
+    } on ApiException catch (error, stack) {
+      state = AsyncValue<MobileSession?>.error(error, stack).copyWithPrevious(state);
+    }
+  }
+
   Future<void> signOut() async {
     await ref.read(authRepositoryProvider).logout();
     state = const AsyncValue.data(null);

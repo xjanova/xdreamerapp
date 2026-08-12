@@ -38,6 +38,7 @@ dependencies:
   share_plus: ^10.1.2       # share a result / referral link
   qr_flutter: ^4.1.0        # referral QR
   url_launcher: ^6.3.1      # xmanstudio checkout + registration
+  app_links: ^6.3.2         # the xdreamer:// return leg of XMAN ID sign-in
 
   package_info_plus: ^8.1.1
   path_provider: ^2.1.5

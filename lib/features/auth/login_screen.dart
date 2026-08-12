@@ -28,6 +28,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   String? _emailError;
   String? _passwordError;
 
+  /// XMAN ID is the way in. The password form is still here for the times
+  /// xman4289.com is unreachable, and for QA, but it is one tap out of the way
+  /// so nobody has to think about which of two logins they have.
+  bool _showEmailForm = false;
+
   @override
   void dispose() {
     _email.dispose();
@@ -49,6 +54,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     });
 
     return _emailError == null && _passwordError == null;
+  }
+
+  Future<void> _signInWithXman() async {
+    if (ref.read(authControllerProvider).isLoading) return;
+    FocusScope.of(context).unfocus();
+    await ref.read(authControllerProvider.notifier).signInWithXman();
   }
 
   Future<void> _submit() async {
@@ -125,72 +136,124 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             'ใช้บัญชีเดียวกับ xman4289.com',
                             style: XdrType.thai(size: 12, color: XdrColors.textMuted),
                           ),
-                          const SizedBox(height: 16),
-                          MetalField(
-                            controller: _email,
-                            label: 'อีเมล',
-                            hint: 'you@example.com',
-                            error: _emailError,
-                            enabled: !busy,
-                            keyboardType: TextInputType.emailAddress,
-                            textInputAction: TextInputAction.next,
-                            autofillHints: const [AutofillHints.email],
-                          ),
-                          const SizedBox(height: 14),
-                          MetalField(
-                            controller: _password,
-                            label: 'รหัสผ่าน',
-                            error: _passwordError,
-                            enabled: !busy,
-                            obscure: !_showPassword,
-                            textInputAction: TextInputAction.done,
-                            onSubmitted: (_) => _submit(),
-                            autofillHints: const [AutofillHints.password],
-                            trailing: PressSink(
-                              radius: 8,
-                              depth: 1,
-                              haptic: false,
-                              onTap: () => setState(() => _showPassword = !_showPassword),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                                child: Text(
-                                  _showPassword ? 'ซ่อน' : 'แสดง',
-                                  style: XdrType.thai(size: 11, color: XdrColors.ice),
-                                ),
-                              ),
-                            ),
-                          ),
-                          if (failure != null) ...[
-                            const SizedBox(height: 14),
-                            ErrorPanel(message: failure.message),
-                          ],
                           const SizedBox(height: 18),
+
+                          // The whole login, in one control. xman4289.com owns
+                          // the account, so it owns the sign-in screen too —
+                          // including the register link for people who have no
+                          // account yet.
                           BrandButton(
-                            label: 'เข้าสู่ระบบ',
+                            label: 'เข้าด้วย XMAN ID',
+                            icon: Icons.person_rounded,
                             busy: busy,
                             radius: 14,
                             fontSize: 15,
                             padding: const EdgeInsets.symmetric(vertical: 15),
-                            onPressed: _submit,
+                            onPressed: _signInWithXman,
                           ),
-                          const SizedBox(height: 16),
-                          const _OrDivider(),
-                          const SizedBox(height: 16),
-                          // The design put a "continue with XMAN Studio" button
-                          // here, but there is no SSO handoff — the accounts are
-                          // literally the same row in the same table. The slot
-                          // is better spent on the thing a customer stuck at
-                          // this screen actually needs.
-                          GhostButton(
-                            label: 'ลืมรหัสผ่าน · รีเซ็ตที่ xman4289.com',
-                            fontSize: 13,
-                            onPressed: busy
-                                ? null
-                                : () => launchUrl(
-                                    Uri.parse('${AppConfig.xmanBaseUrl}/password/reset'),
-                                    mode: LaunchMode.externalApplication,
+                          const SizedBox(height: 8),
+                          Text(
+                            'ถ้าเคยเข้าสู่ระบบที่ xman4289.com ไว้ จะเข้าให้อัตโนมัติ',
+                            textAlign: TextAlign.center,
+                            style: XdrType.thai(size: 11, color: XdrColors.textDim),
+                          ),
+
+                          if (failure != null && !_showEmailForm) ...[
+                            const SizedBox(height: 14),
+                            ErrorPanel(message: failure.message),
+                          ],
+
+                          const SizedBox(height: 14),
+                          Center(
+                            child: PressSink(
+                              radius: 10,
+                              depth: 1,
+                              onTap: busy
+                                  ? null
+                                  : () => setState(() => _showEmailForm = !_showEmailForm),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                                child: Text(
+                                  _showEmailForm
+                                      ? 'ซ่อนการเข้าด้วยอีเมล'
+                                      : 'เข้าด้วยอีเมลและรหัสผ่าน',
+                                  style: XdrType.thai(size: 12, color: XdrColors.textMuted),
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          if (_showEmailForm) ...[
+                            const SizedBox(height: 10),
+                            const Divider(color: XdrColors.hairline),
+                            const SizedBox(height: 14),
+                            MetalField(
+                              controller: _email,
+                              label: 'อีเมล',
+                              hint: 'you@example.com',
+                              error: _emailError,
+                              enabled: !busy,
+                              keyboardType: TextInputType.emailAddress,
+                              textInputAction: TextInputAction.next,
+                              autofillHints: const [AutofillHints.email],
+                            ),
+                            const SizedBox(height: 14),
+                            MetalField(
+                              controller: _password,
+                              label: 'รหัสผ่าน',
+                              error: _passwordError,
+                              enabled: !busy,
+                              obscure: !_showPassword,
+                              textInputAction: TextInputAction.done,
+                              onSubmitted: (_) => _submit(),
+                              autofillHints: const [AutofillHints.password],
+                              trailing: PressSink(
+                                radius: 8,
+                                depth: 1,
+                                haptic: false,
+                                onTap: () => setState(() => _showPassword = !_showPassword),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                                  child: Text(
+                                    _showPassword ? 'ซ่อน' : 'แสดง',
+                                    style: XdrType.thai(size: 11, color: XdrColors.ice),
                                   ),
-                          ),
+                                ),
+                              ),
+                            ),
+                            if (failure != null) ...[
+                              const SizedBox(height: 14),
+                              ErrorPanel(message: failure.message),
+                            ],
+                            const SizedBox(height: 18),
+                            GhostButton(
+                              label: 'เข้าสู่ระบบด้วยอีเมล',
+                              fontSize: 14,
+                              radius: 14,
+                              padding: const EdgeInsets.symmetric(vertical: 14),
+                              onPressed: busy ? null : _submit,
+                            ),
+                            const SizedBox(height: 12),
+                            Center(
+                              child: PressSink(
+                                radius: 10,
+                                depth: 1,
+                                onTap: busy
+                                    ? null
+                                    : () => launchUrl(
+                                        Uri.parse('${AppConfig.xmanBaseUrl}/password/reset'),
+                                        mode: LaunchMode.externalApplication,
+                                      ),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                                  child: Text(
+                                    'ลืมรหัสผ่าน · รีเซ็ตที่ xman4289.com',
+                                    style: XdrType.thai(size: 11.5, color: XdrColors.textDim),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ],
                       ),
                     ),
@@ -235,24 +298,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class _OrDivider extends StatelessWidget {
-  const _OrDivider();
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        const Expanded(child: Divider(color: XdrColors.hairline)),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Text('หรือ', style: XdrType.thai(size: 11, color: XdrColors.textDim)),
-        ),
-        const Expanded(child: Divider(color: XdrColors.hairline)),
-      ],
     );
   }
 }

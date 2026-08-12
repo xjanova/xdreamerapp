@@ -39,6 +39,17 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+
+            <!-- The return leg of "Sign in with XMAN ID". xman4289.com sends
+                 the authorization code here after the browser has done the
+                 signing in. Any app can claim a custom scheme, which is why the
+                 code is bound to a PKCE challenge and is useless on its own. -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="xdreamer" android:host="auth"/>
+            </intent-filter>
         </activity>
         <meta-data
             android:name="flutterEmbedding"

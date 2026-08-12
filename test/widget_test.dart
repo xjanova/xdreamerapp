@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:xdreamer/data/repositories/update_repository.dart';
 import 'package:xdreamer/core/net/api_exception.dart';
+import 'package:xdreamer/core/net/xman_sso.dart';
 import 'package:xdreamer/core/theme/xdr_type.dart';
 import 'package:xdreamer/data/models/catalog.dart';
 import 'package:xdreamer/data/models/generation.dart';
@@ -229,6 +230,26 @@ void main() {
         await sha256OfFile(file),
         'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
       );
+    });
+  });
+
+  group('PKCE challenge', () {
+    test('matches the RFC 7636 test vector', () {
+      // Appendix B of RFC 7636. xmanstudio recomputes this from the verifier
+      // with PHP's hash + base64; if the two ever disagree, every XMAN ID
+      // sign-in fails at the exchange with nothing in the UI to explain it.
+      expect(
+        XmanSso.challengeFor('dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk'),
+        'E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM',
+      );
+    });
+
+    test('is url-safe and unpadded, as the spec requires', () {
+      final challenge = XmanSso.challengeFor('a' * 43);
+      expect(challenge, isNot(contains('=')));
+      expect(challenge, isNot(contains('+')));
+      expect(challenge, isNot(contains('/')));
+      expect(challenge.length, 43);
     });
   });
 

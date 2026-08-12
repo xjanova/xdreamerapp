@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/net/api_client.dart';
 import '../core/net/token_store.dart';
+import '../core/net/xman_sso.dart';
 import '../data/models/catalog.dart';
 import '../data/repositories/auth_repository.dart';
 import '../data/repositories/catalog_repository.dart';
@@ -27,6 +28,15 @@ final sessionLostSignalProvider = Provider<SessionLostSignal>((ref) {
 });
 
 final tokenStoreProvider = Provider<TokenStore>((ref) => TokenStore());
+
+/// Lives for the app's lifetime: the deep-link subscription has to be up before
+/// the browser hands a callback back, including when the app was killed and
+/// relaunched by the link itself.
+final xmanSsoProvider = Provider<XmanSso>((ref) {
+  final sso = XmanSso()..start();
+  ref.onDispose(sso.dispose);
+  return sso;
+});
 
 final apiClientProvider = Provider<ApiClient>((ref) {
   final signal = ref.watch(sessionLostSignalProvider);
